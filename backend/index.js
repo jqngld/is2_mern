@@ -25,6 +25,7 @@ mongoose
 // rutas
 app.use('/api/user', require('./routes/user'))
 app.use('/api/auth', require('./routes/auth'))
+app.use('/api/historiaclinica', require('./routes/historiaclinica'))
 
 // port
 const port = process.env.PORT

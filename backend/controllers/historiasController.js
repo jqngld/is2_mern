@@ -12,16 +12,16 @@ const InfoFiebre = require('../models/InfoFiebre')
 const crearHistoriaCovid = async (req, res = response) => {
   const { dni, ultDosis, cDosis } = req.body
 
-  if (isDate(ultDosis)) {
-    let info = {}
-    info.ultimaDosis = ultDosis
-    info.cantDosis = cDosis
-  } else {
-      return res.status(400).json({
-          ok: false,
-          msg: 'El campo última dosis no es una fecha'
-      })
-  }
+//   if (isDate(ultDosis)) {
+     let info = {}
+     info.ultimaDosis = ultDosis
+     info.cantDosis = cDosis
+//   } else {
+//       return res.status(400).json({
+//           ok: false,
+//           msg: 'El campo última dosis no es una fecha'
+//       })
+//   }
   
   try {
 
