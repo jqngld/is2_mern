@@ -40,20 +40,11 @@ const Usuario = new mongoose.Schema({
   turnos: {
     type: [],
   },
-  infoFiebre: {
+  historiaClinica: {
     type: ObjectId,
-    ref: 'InfoFiebre',
-  },
-  infoCovid: {
-    type: ObjectId,
-    ref: 'InfoCovid',
-    require: false,
-  },
-  infoGripe: {
-    type: ObjectId,
-    ref: 'InfoGripe',
-    require: false,
-  },
-})
+    ref: 'HistoriaClinica'
+  }
+  }
+)
 
 module.exports = mongoose.model('Usuario', Usuario)

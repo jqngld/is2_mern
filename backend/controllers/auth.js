@@ -37,6 +37,9 @@ const crearUsuario = async (req, res = response) => {
     // registrar usuario con is_admin en false
     req.body.is_admin = false
     req.body.turnos = []
+    req.body.infoCovid = undefined
+    req.body.infoGripe = undefined
+    req.body.infoFiebre = undefined
     usuario = new Usuario(req.body)
 
     // Encriptar contraseña

@@ -6,28 +6,26 @@ const { Router } = require('express')
 const { check } = require('express-validator')
 const { validarCampos } = require('../middlewares/validar-campos')
 const {
-  crearHistoriaCovid,
-  crearHistoriaFiebre,
-  crearHistoriaGripe
+  crearHistoria
 } = require('../controllers/historiasController')
 const { validarJWT } = require('../middlewares/validar-jwt')
 
 const router = Router()
 
 router.post(
-  '/nuevahistoriacovid',
-  crearHistoriaCovid
+  '/nuevahistoriaclinica',
+  crearHistoria,
 )
 
-router.post(
-    '/nuevahistoriagripe',
-    crearHistoriaGripe
-  )
+// router.post(
+//     '/nuevahistoriagripe',
+//     crearHistoriaGripe
+//   )
 
-router.post(
-    '/nuevahistoriafiebre',
-    crearHistoriaFiebre
-)
+// router.post(
+//     '/nuevahistoriafiebre',
+//     crearHistoriaFiebre
+// )
 
 
 // router.get('/renew', validarJWT, revalidarToken)
