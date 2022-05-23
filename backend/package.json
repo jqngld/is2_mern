@@ -19,6 +19,8 @@
     "fs": "^0.0.1-security",
     "lodash": "^4.17.21",
     "mongoose": "^6.3.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1"
   }
 }
