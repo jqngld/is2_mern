@@ -2,7 +2,6 @@ import { fetchSinToken, fetchConToken } from '../helpers/fetch'
 import { types } from '../types/types'
 import Swal from 'sweetalert2'
 import { eventLogout } from './events'
-// import { elements } from '../utils/elements'
 
 export const startLogin = (email, password) => {
   return async (dispatch) => {
