@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+.calendar-screen {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+}
+
+.rbc-calendar {
+  height: 100%;
+}
+
+/* Modal */
+.ReactModalPortal > div {
+  opacity: 0;
+}
+
+.ReactModalPortal .ReactModal__Overlay {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 999;
+}
+
+.modal-fondo {
+  background-color: rgba(0, 0, 0, 0.3);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: fixed;
+}
+
+.ReactModalPortal .ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModalPortal .ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.modal {
+  background: white;
+  border-radius: 5px;
+  color: rgb(51, 51, 51);
+  display: inline;
+  max-height: 620px;
+  max-width: 500px;
+  outline: none;
+  padding: 10px;
+}
+
+/* Datepicker */
+.react-datetime-picker input:focus {
+  outline: none;
+}
+
+.react-datetime-picker__wrapper {
+  border: 0px solid gray !important;
+}
+
+/* FABS */
+.fab {
+  border-radius: 100%;
+  bottom: 25px;
+  font-size: 30px;
+  padding: 25px;
+  position: fixed;
+  right: 25px;
+}
+
+.fab-danger {
+  bottom: 25px;
+  padding: 10px;
+  position: fixed;
+  left: 25px;
+}
+
+.boton-activo {
+  margin: 0.5rem;
+
+  background-color: rgba(57, 255, 255, 0.795);
+}
+
+.boton-danger {
+  margin: 0.5rem;
+
+  background-color: rgb(8, 8, 8);
+  border: solid;
+  border-color: brown;
+}
+
+.boton-ok {
+  margin: 0.5rem;
+
+  background-color: rgb(8, 8, 8);
+  border: solid;
+  border-color: rgb(28, 190, 155);
+}
+
+:hover.boton-activo {
+  background-color: rgb(0, 172, 154);
+  border-style: solid;
+  border-color: turquoise;
+  border-width: solid;
+  transition: 3ms;
+}
+
+.semititle {
+  color: white;
+}
+
+.boton-inactivo {
+  background-color: grey;
+}
+
+:hover.boton-inactivo {
+  background-color: grey;
+  border-style: solid;
+  border-color: grey;
+  border-width: 3px;
+  transition: 3ms;
+}
+
+.mymodal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  border: 1px solid rgb(204, 204, 204);
+  background: #fff;
+  overflow: auto;
+  border-radius: 2px;
+  outline: none;
+  padding: 20px;
+}
+
+.myoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.fondo2 {
+  background: url('./assets/wallpaper1.png') no-repeat center center fixed;
+  background-size: cover;
+  height: 100%;
+}
+
+.fondo1 {
+  background: url('./assets/wallpaper2.png') no-repeat center center fixed;
+  background-size: cover;
+  height: 100%;
+}
+
+.page {
+  min-height: 100vh;
+}
+
+.card {
+  width: 15rem;
+  height: 15rem;
+}
+.imagen-card {
+  border-radius: 5px;
+}
+.formita-card {
+  position: absolute;
+  bottom: 1rem;
+  left: -1rem;
+  width: 130%;
+}
