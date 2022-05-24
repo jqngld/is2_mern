@@ -52,8 +52,8 @@ export const Addnew = () => {
           <h1 className='flex w-full p-8 justify-center transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 tracking-wider'>
             <img
               style={{ width: ' 250px' }}
-              src='images/Logo.svg'
-              alt='Rujan'
+              src='https://i.ibb.co/FYdLf8n/Sin-t-tulo-1.png'
+              alt=''
               className='mt-2 w-full'
             />
           </h1>

@@ -13,7 +13,7 @@ export const Sidebar = () => {
         <div className='w-64 min-h-full  absolute sm:relative bg-gray-800 shadow flex-col justify-between hidden sm:flex bg-opacity-50'>
           <div className='px-8'>
             <div className='h-16 w-full flex items-center'>
-              <img src='images/Logo.svg' alt='' />
+              <img src='https://i.ibb.co/FYdLf8n/Sin-t-tulo-1.png' alt='' />
             </div>
             <ul className='mt-12'>
               <li className='flex w-full justify-between text-gray-300 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 hover:text-gray-500 cursor-pointer items-center mb-6'>

@@ -8,7 +8,7 @@ export const IndexAuth = () => {
   return (
     <div className='max-h-screen '>
       <div className='p-16  flex justify-center justify-center max-s-screen'>
-        <img className='w-2/3 sm:w-3/12 ' src='images/Logo.svg' alt='' />
+        <img className='' src='https://i.ibb.co/FYdLf8n/Sin-t-tulo-1.png' alt='' />
       </div>
 
       <div className='p-16 m-16 flex justify-center'>

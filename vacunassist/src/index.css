@@ -88,7 +88,7 @@ body {
 .boton-activo {
   margin: 0.5rem;
 
-  background-color: rgba(57, 255, 255, 0.795);
+  background-color: rgba(73, 133, 68, 0.795);
 }
 
 .boton-danger {
@@ -168,13 +168,13 @@ body {
 }
 
 .fondo2 {
-  background: url('./assets/wallpaper1.png') no-repeat center center fixed;
+  background: url('./assets/vacunassist_gradiente1.png') no-repeat center center fixed;
   background-size: cover;
   height: 100%;
 }
 
 .fondo1 {
-  background: url('./assets/wallpaper2.png') no-repeat center center fixed;
+  background: url('./assets/vacunassist_gradiente1.png') no-repeat center center fixed;
   background-size: cover;
   height: 100%;
 }

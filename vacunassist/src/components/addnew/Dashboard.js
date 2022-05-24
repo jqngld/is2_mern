@@ -22,8 +22,8 @@ export const Dashboard = () => {
         <h1 className='flex w-full justify-center'>
           <img
             style={{ width: ' 250px' }}
-            src='images/Logo.svg'
-            alt='Rujan'
+            src='https://i.ibb.co/FYdLf8n/Sin-t-tulo-1.png'
+            alt=''
             className='mt-2 w-full'
           />
         </h1>

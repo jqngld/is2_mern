@@ -29,7 +29,7 @@ export const Login = () => {
   return (
     <div className='max-h-screen overflow-hidden'>
       <div className='justify-start flex p-8'>
-        <img className='w-2/3 sm:w-3/12 ' src='images/logo.svg' alt='' />
+        <img className='w-2/3 sm:w-3/12 ' src='https://i.ibb.co/FYdLf8n/Sin-t-tulo-1.png' alt='' />
       </div>
 
       <div className='  flex justify-center max-s-screen'>

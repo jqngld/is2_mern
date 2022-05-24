@@ -56,7 +56,7 @@ export const Cuenta = () => {
           <h1 className='flex w-full justify-center'>
             <img
               style={{ width: ' 250px' }}
-              src='../images/Logo.svg'
+              src='../assets/VA_Logo.png'
               alt='Rujan'
               className='mt-2 w-full'
             />
