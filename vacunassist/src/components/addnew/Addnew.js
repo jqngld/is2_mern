@@ -63,15 +63,7 @@ export const Addnew = () => {
         <hr />
 
         <div className='flex flex-col '>
-          <div className='flex items-center'>
-            <button
-              // onClick={(handleSubmitForm, toggle)}
-              className='font-bold rounded  border-solid text-white align-items center border-2 rounded-md   m-2 p-2  p-0 w-full'
-            >
-              + Añadir ejercicio
-            </button>
-            <h4 className=''>{mensaje}</h4>
-          </div>
+          
           <hr />
           <FormExcercise
             isOpen={isOpen2}

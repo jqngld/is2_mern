@@ -69,7 +69,7 @@ export const Sidebar = () => {
                     className='font-bold text-white hover:text-gray-200'
                   >
                     <span className='text-sm  ml-2 whitespace-nowrap'>
-                      Añadir ejercicio
+                      Mi historia clínica
                     </span>
                   </Link>
                 </div>

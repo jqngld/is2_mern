@@ -80,30 +80,17 @@ const FormExcercise = ({ isOpen, toggle, color }) => {
   }
 
   const [formExcercise, handleFormExcerciseInputChange, reset] = useForm({
-    nameE: '',
-    description: '',
-    difficulty: '',
-    type_reps: '',
-    muscle_area: [],
-    element: [],
-    professor_id: '',
-    professor_name: '',
-    img: '',
-    link: '',
+    cDosisCovid: '',
+    ultDosisCovid: '',
+    ultDosisFiebre: '',
+    ultDosisGripe: '',
   })
 
   const {
-    nameE,
-    description,
-    difficulty,
-    type_reps,
-    muscle_area,
-    element,
-    cover,
-    media,
-    professor_id,
-    professor_name,
-    img,
+    cDosisCovid,
+    ultDosisCovid,
+    ultDosisFiebre,
+    ultDosisGripe,
     link,
   } = formExcercise
 
@@ -215,52 +202,31 @@ const FormExcercise = ({ isOpen, toggle, color }) => {
 
           <form onSubmit={handleNew} method='POST'>
             <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Nombre *
+              Cantidad de dosis de vacuna(s) contra el COVID19 que recibiste
             </span>
             <input
               type='text'
-              placeholder='Ingrese el nombre del ejercicio...'
-              name='nameE'
+              placeholder=''
+              name='cDosisCovid'
               className='text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
-              value={nameE}
+              value={cDosisCovid}
               onChange={handleFormExcerciseInputChange}
             />
-
-            {errorNombre ? (
-              <label
-                htmlFor='nameE'
-                className={`${
-                  visibleNombre ? 'mostrar' : 'invisible'
-                } flex flex-start pl-2 text-red-800 italic text-left text-sm`}
-              >
-                Ya existe un ejercicio con el mismo nombre para tu cuenta de
-                profesor.
-              </label>
-            ) : (
-              <label
-                htmlFor='nameE'
-                className={`${
-                  errorNombre ? 'red' : visibleNombre ? 'mostrar' : 'invisible'
-                } flex flex-start pl-2 text-gray-300 italic`}
-              >
-                Qué nombre le pondrías a este ejercicio?
-              </label>
-            )}
 
             <hr className='m-4' />
 
             <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Descripción *
+              Fecha de tu última dosis recibida contra el COVID19
             </span>
-            <textarea
-              name='description'
-              className='text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30 h-40'
+            <input type='date'
+              name='ultDosisCovid'
+              className='text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
               id=''
               cols='10'
               rows='10'
-              value={description}
+              value={ultDosisCovid}
               onChange={handleFormExcerciseInputChange}
-            >
+            ></input>
               {/* <input
                 type='text'
                 
@@ -270,337 +236,46 @@ const FormExcercise = ({ isOpen, toggle, color }) => {
                 value={description}
                 onChange={handleFormExcerciseInputChange}
               /> */}
-            </textarea>
-            {errorNombre ? (
-              <label
-                htmlFor='description'
-                className={`${
-                  visibleNombre ? 'mostrar' : 'invisible'
-                } flex flex-start pl-2 text-red-800 italic text-left text-sm`}
-              >
-                La descripción no puede quedar vacía
-              </label>
-            ) : (
-              <label
-                htmlFor='description'
-                className={`${
-                  errorNombre ? 'red' : visibleNombre ? 'mostrar' : 'invisible'
-                } flex flex-start pl-2 text-gray-300 italic`}
-              >
-                Danos una breve descripción de lo que se trata este ejercicio
-              </label>
-            )}
+            {/* </textarea> */}
 
             <hr className='m-4' />
 
-            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Dificultad *
-            </span>
-            <div className='flex justify-between'>
-              {difficulty1.map(({ name, img }, index2) => {
-                return (
-                  <li key={index2} id={index2} className='flex justify-between'>
-                    <input
-                      type='checkbox'
-                      placeholder='Dificultad'
-                      name='difficulty'
-                      className='flex flex-start p-8 m-2'
-                      value={name}
-                      id={index2 + 'dif'}
-                      onClick={checkbox}
-                      checked={checkedState3[index2]}
-                    />
-
-                    <label
-                      onClick={checkbox}
-                      id={`${index2}dif`}
-                      name='difficulty'
-                      className={`flex flex-start pl-2 italic text-left text-sm`}
-                    >
-                      {name}
-
-                      <img src={img} alt='' />
-                    </label>
-                  </li>
-                )
-              })}
-            </div>
-
-            <hr className='m-4' />
-
-            {/* REPS */}
 
             <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Repeticiones *
+              Fecha de tu última dosis recibida contra la gripe
             </span>
-            <div className='flex flex-wrap justify-between'>
-              {typeReps.map(({ name, descrip, img }, index) => {
-                return (
-                  <li key={index} className='flex justify-between'>
-                    <input
-                      type='checkbox'
-                      placeholder='Dificultad'
-                      name='type_reps'
-                      className='flex flex-start p-8 m-2 '
-                      value={name}
-                      id={index}
-                      onClick={checkbox2}
-                      checked={checkedState4[index]}
-                    />
-
-                    <label
-                      onClick={checkbox2}
-                      id={index}
-                      name='type_reps'
-                      className={`flex flex-start pl-2 italic text-left text-sm`}
-                    >
-                      {name}
-
-                      <img src={img} alt='' />
-                    </label>
-                  </li>
-                )
-              })}
-              {/* 
-              <div className='w-1/2'>
-                <input
-                  type='number'
-                  
-                  placeholder='Cantidad'
-                  name='duration_reps'
-                  className='flex flex-start ml-8 h-8 text-sm text-white py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
-                  value={duration_reps}
-                  onChange={handleFormExcerciseInputChange}
-                />
-
-                <div className='flex flex-col'>
-                  <label
-                    htmlFor='Cantidad'
-                    className={`flex flex-start pl-2 italic text-left text-sm`}
-                  >
-                    Duración
-                  </label>
-                  <label
-                    htmlFor='Cantidad'
-                    className={`flex flex-start pl-2 italic text-left text-sm`}
-                  >
-                    Ingrese sólo valores numéricos (en segundos para tiempo)
-                  </label>
-                </div>
-              </div> */}
-            </div>
-
-            {/* Fin REPS */}
-
-            <hr className='m-4' />
-
-            {/* add elements */}
-
-            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Herramientas
-            </span>
-
-            <div className='flex flex-start p-4  w-full'>
-              <div className='flex flex-col'>
-                <button
-                  type='button'
-                  onClick={openModal}
-                  class='bg-gray-800 text-white hover:bg-gray-400 font-bold py-2 px-4 rounded inline-flex items-center  w-60 flex justify-around'
-                >
-                  <span>+</span>
-                  <span>Añadir elemento</span>
-                </button>
-                <div className='flex flex-wrap'>
-                  {checkedState.map((item, index) =>
-                    item ? (
-                      <div id={index}>
-                        <button
-                          type='button'
-                          onClick={check}
-                          id={index}
-                          class='bg-gray-600 text-white hover:bg-gray-400 font-bold py-2 px-4 rounded inline-flex items-center flex flex-wrap justify-around mt-2 mr-2'
-                        >
-                          <span className='pr-2' id={index}>
-                            -
-                          </span>
-                          <span id={index}>{elements[index].name}</span>
-                        </button>
-                      </div>
-                    ) : (
-                      <div></div>
-                    )
-                  )}
-                </div>
-              </div>
-              <Modal
-                isOpen={modalIsOpen}
-                onAfterOpen={afterOpenModal}
-                onRequestClose={closeModal}
-                style={modalStyles}
-                contentLabel='Videos Modal'
-              >
-                <div className='flex justify-between '>
-                  <h2
-                    ref={(_subtitle) => (subtitle = _subtitle)}
-                    className='ml-8 text-2xl text-white'
-                  >
-                    Seleccione herramientas a utilizar
-                  </h2>
-                  <button
-                    onClick={closeModal}
-                    className='border-solid px-3 py-1 border-2 text-white   right-0 '
-                  >
-                    {' '}
-                    X{' '}
-                  </button>
-                </div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-                  {elements.map(({ name, descrip, img }, index) => {
-                    return (
-                      <div
-                        id={index}
-                        // onMouseEnter={handleClick}
-                        // onClick={check}
-                        className=' p-8 -20 '
-                        key={index}
-                      >
-                        <Card
-                          id={index}
-                          img={`images/elements/${index}.png`}
-                          nombre={name}
-                          rol={descrip}
-                          isChecked={checkedState[index]}
-                          check={check}
-                        ></Card>
-                      </div>
-                    )
-                  })}
-                </div>
-              </Modal>
-            </div>
-
-            {/* add parts_body */}
-
-            <hr className='m-4' />
-
-            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Zonas musculares
-            </span>
-
-            <div className='flex flex-start p-4  w-full'>
-              <div className='flex flex-col'>
-                <button
-                  type='button'
-                  onClick={openModal2}
-                  class='bg-gray-800 text-white hover:bg-gray-400 font-bold py-2 px-4 rounded inline-flex items-center  w-60 flex justify-around'
-                >
-                  <span>+</span>
-                  <span>Añadir zona muscular</span>
-                </button>
-                <div className='flex flex-wrap'>
-                  {checkedState2.map((item, index) =>
-                    item ? (
-                      <div id={index}>
-                        <button
-                          type='button'
-                          onClick={check2}
-                          id={index}
-                          class='bg-gray-600 text-white hover:bg-gray-400 font-bold py-2 px-4 rounded inline-flex items-center flex flex-wrap justify-around mt-2 mr-2'
-                        >
-                          <span className='pr-2' id={index}>
-                            -
-                          </span>
-                          <span id={index}>{parts_body[index].name}</span>
-                        </button>
-                      </div>
-                    ) : (
-                      <div></div>
-                    )
-                  )}
-                </div>
-              </div>
-              <Modal
-                isOpen={modalIsOpen2}
-                onAfterOpen={afterOpenModal2}
-                onRequestClose={closeModal2}
-                style={modalStyles}
-                contentLabel='Videos Modal'
-              >
-                <div className='flex justify-between '>
-                  <h2
-                    ref={(_subtitle) => (subtitle = _subtitle)}
-                    className='ml-8 text-2xl text-white'
-                  >
-                    Seleccione zonas musculares involucradas
-                  </h2>
-                  <button
-                    onClick={closeModal2}
-                    className='border-solid px-3 py-1 border-2 text-white   right-0 '
-                  >
-                    {' '}
-                    X{' '}
-                  </button>
-                </div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-                  {parts_body.map(({ name, descrip, img }, index) => {
-                    return (
-                      <div
-                        id={index}
-                        // onMouseEnter={handleClick}
-                        // onClick={check}
-                        className=' p-8 -20 '
-                        key={index}
-                      >
-                        <Card
-                          id={index}
-                          img={`images/body/${index}.png`}
-                          nombre={name}
-                          rol={descrip}
-                          isChecked={checkedState2[index]}
-                          check={check2}
-                        ></Card>
-                      </div>
-                    )
-                  })}
-                </div>
-              </Modal>
-            </div>
-
-            <hr className='m-4' />
-
-            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Subir una imagen descriptiva del ejercicio
-            </span>
-
-            <input
-              type='file'
-              onChange={(e) => convertImage(e.target.files[0])}
-              alt='agrega un archivo'
-            />
-            <img src={imageFile} alt='' />
-
-            <hr className='m-4' />
-
-            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Agrega el link de un video de referencia
-            </span>
-
-            <input
-              type='text'
-              placeholder='Ingrese el link del video del ejercicio...'
-              name='link'
+            <input type='date'
+              name='ultDosisGripe'
               className='text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
-              value={link}
+              id=''
+              cols='10'
+              rows='10'
+              value={ultDosisGripe}
               onChange={handleFormExcerciseInputChange}
-            />
+            ></input>
 
             <hr className='m-4' />
+
+            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
+              Fecha de tu última dosis recibida contra la fiebre
+            </span>
+            <input type='date'
+              name='ultDosisGripe'
+              className='text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
+              id=''
+              cols='10'
+              rows='10'
+              value={ultDosisFiebre}
+              onChange={handleFormExcerciseInputChange}
+            ></input>
+
+<hr className='m-4' />
 
             <div className='flex'>
               <div className='w-1/2 p-4 pl-0'>
                 <button
                   type='reset'
-                  className={`text-white w-full rounded h-8 font-bold boton-activo boton-danger
+                  className={`text-white w-full rounded h-8 font-bold boton-activo
                   `}
                 >
                   Cancelar
