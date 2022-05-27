@@ -16,57 +16,40 @@ import axios from 'axios'
 
 
 
-function CreateHistoria() {
+function VerPerfil() {
 
     let store = useStore().getState()
+    let id = store.auth.uid
 
-    const [input, setInput] = useState({
-        cant: '',
-        fechaCovid: '',
-        fechaGripe: '',
-        fechaFiebre: '',
-    })
+    const [perfil, setPerfil] = useState([])
 
-    function handleChange(event) {
-        const {name, value} = event.target;
-
-        setInput(prevInput => {
-            return {
-                ...prevInput,
-                [name]: value
-            }
+    useEffect(() => {
+        axios.get('http://localhost:4000/api/user/' + id)
+        .then((res) => {
+            console.log(res.data)
+            setPerfil([res.data])
         })
-    }
-
-
-    function handleClick(event) {
-        event.preventDefault();
-
-        let id = store.auth.uid
-
-        console.log('EL ID ES :: ', id)
-        console.log('LA CANT ES :: ', input.cant)
-
-        const newHistoria = {
-            dni: id,
-            ultDosisCovid: input.fechaCovid,
-            cDosisCovid: input.cant,
-            ultDosisFiebre: input.fechaFiebre,
-            ultDosisGripe: input.fechaGripe
-        }
-        
-        axios.post('http://localhost:4000/api/historiaclinica/nuevahistoriaclinica', newHistoria)
-
-        Swal.fire('', 'Se actualizó tu historia clínica', 'success')
-
-    }
+    }, [])
 
     return (
-        <div className='grid text-center  poppinsSemiBold nowrap'>
-            <div className='text-white font-bold text-6xl flex-start flex p-4'>Mi información personal</div>
-        </div>
+            <div>
+                <div className='text-white font-bold text-6xl p-2'>Mi información personal</div>
+                {
+                    Array.isArray(perfil) && perfil.map(info =>
+                    <div className='text-white font-bold text-2xl p-2'> 
+                        <h1>Nombre: {info.name}</h1> <hr className='m-4' />
+                        <h1>Apellido: {info.lastname}</h1> <hr className='m-4' />
+                        <h1>DNI: {info.dni}</h1> <hr className='m-4' />
+                        <h1>Edad: {info.age}</h1> <hr className='m-4' />
+                        <h1>Teléfono: {info.tel}</h1> <hr className='m-4' />
+                        <h1>Fecha de nacimiento: {info.date}</h1> <hr className='m-4' />
+                    </div>)
+                }
+            </div>
+        //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
     )
-    }
 
-export default CreateHistoria
+}
 
+
+export default VerPerfil

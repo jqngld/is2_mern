@@ -30,13 +30,6 @@ function VerTurnos() {
         })
     }, [])
 
-    const getTurnos = () => {
-        axios.get('http://localhost:4000/api/turno/' + id)
-        .then((res) => {
-            console.log(res)
-        })
-    }
-
     return (
             <div className='text-white text-left font-bold text-2xl flex-col p-4'>
                 {
