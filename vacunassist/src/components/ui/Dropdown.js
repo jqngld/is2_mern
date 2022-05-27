@@ -21,7 +21,7 @@ const Dropdown2 = ({ isOpen, toggle, rol, usuario }) => {
       </Link> */}
       <span className='p-4 text-white'>
         {' '}
-        {rol ? 'Profesor: ' : 'Alumno: '}
+        {rol ? 'Profesor: ' : 'Paciente: '}
         {usuario}
       </span>
 

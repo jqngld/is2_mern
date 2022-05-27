@@ -1,7 +1,7 @@
 const Usuario = require('../models/Usuario.js')
 
 exports.create = (req, res) => {
-  const user = new Ususario(req.body)
+  const user = new Usuario(req.body)
   user.save((err, data) => {
     if (err) {
       return res.status(400).json({

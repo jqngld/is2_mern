@@ -30,7 +30,7 @@ export const Dashboard = () => {
       </Link>
 
       <h1 className='flex w-full items-center text-white mt-16 justify-center'>
-        DASHBOARD
+        Bienvenid@ al sistema de turnos online de VACUNASSIST
       </h1>
     </div>
   )

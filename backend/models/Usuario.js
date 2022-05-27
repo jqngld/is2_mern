@@ -34,6 +34,14 @@ const Usuario = new mongoose.Schema({
     type: Date,
     require: true,
   },
+  riesgo: {
+    type: Boolean,
+    require: false
+  },
+  age: {
+    type: Number,
+    require: true,
+  },
   is_admin: {
     type: Boolean,
   },

@@ -21,7 +21,7 @@ export const Navbar = () => {
   return (
     <div onClick={toggle} className='absolute flex items-center right-4'>
       <span onClick={toggle} className='navbar-brand text-white p-8'>
-        {is_professor ? 'Profesor: ' : 'Alumno: '}
+        {is_professor ? 'Profesor: ' : 'Paciente: '}
       </span>
       <span
         onClick={toggle}

@@ -2,11 +2,12 @@ const { response } = require('express')
 const bcrypt = require('bcryptjs')
 const Usuario = require('../models/Usuario')
 const { generarJWT } = require('../helpers/jwt')
+const { isObjectIdOrHexString } = require('mongoose')
 // const mongoose = require('mongoose')
 // const Excercise = require('../models/Excercise')
 
 const crearUsuario = async (req, res = response) => {
-  const { name, lastname, dni, email, password } = req.body
+  const { name, lastname, dni, email, date, password } = req.body
 
   if (name.trim() == '' || lastname.trim() == '') {
     return res.status(400).json({
@@ -37,25 +38,54 @@ const crearUsuario = async (req, res = response) => {
     // registrar usuario con is_admin en false
     req.body.is_admin = false
     req.body.turnos = []
-    req.body.infoCovid = undefined
-    req.body.infoGripe = undefined
-    req.body.infoFiebre = undefined
-    usuario = new Usuario(req.body)
+    req.body.historiaClinica = undefined
+    
+    function getAge(_date) {
+        var today = new Date();
+        var birthDate = new Date(_date);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    function getRiesgo(age) {
+      if (age > 60)
+        return true;
+      return false;
+  }
+
+    let edad = getAge(req.body.date)
+
+    const usernuevo = new Usuario({
+      email: req.body.email,
+      name: req.body.name,
+      dni: req.body.dni,
+      lastname: req.body.lastname,
+      tel: req.body.tel,
+      date: req.body.date,
+      age: edad,
+      riesgo: getRiesgo(edad),
+      turnos: [],
+      historiaClinica: null
+    })
 
     // Encriptar contraseña
     const salt = bcrypt.genSaltSync()
-    usuario.password = bcrypt.hashSync(req.body.password, salt)
+    usernuevo.password = bcrypt.hashSync(req.body.password, salt)
 
-    await usuario.save()
+    await usernuevo.save()
 
     // Generar JWT
-    const token = await generarJWT(usuario.id, usuario.name)
+    const token = await generarJWT(usernuevo.id, usernuevo.name)
 
     res.status(201).json({
       ok: true,
-      uid: usuario.id,
-      name: usuario.name,
-      is_admin: usuario.is_admin,
+      uid: usernuevo.id,
+      name: usernuevo.name,
+      is_admin: usernuevo.is_admin,
       token,
     })
   } catch (error) {

@@ -6,13 +6,12 @@ const turnoSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  // aca no sería ref a una vacuna?
+  dateString: {
+    type: String,
+    required: true
+  },
   vax: {
     type: String,
-    required: true,
-  },
-  patient: {
-    type: Usuario,
     required: true,
   },
 })

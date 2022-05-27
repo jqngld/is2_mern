@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { Convert } from 'mongo-image-converter'
 
@@ -260,7 +261,7 @@ const FormExcercise = ({ isOpen, toggle, color }) => {
               Fecha de tu última dosis recibida contra la fiebre
             </span>
             <input type='date'
-              name='ultDosisGripe'
+              name='ultDosisFiebre'
               className='text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
               id=''
               cols='10'
@@ -278,12 +279,14 @@ const FormExcercise = ({ isOpen, toggle, color }) => {
                   className={`text-white w-full rounded h-8 font-bold boton-activo
                   `}
                 >
-                  Cancelar
+                <Link
+                    to='/home'
+                    
+                  >Cancelar</Link>
                 </button>
               </div>
               <div className='w-1/2 p-4 pr-0'>
                 <button
-                  disabled={isInvalid}
                   type='submit'
                   value='Guardar'
                   className={`text-white w-full rounded h-8 font-bold boton-activo

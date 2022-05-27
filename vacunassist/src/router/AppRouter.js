@@ -8,6 +8,10 @@ import { PublicRoute } from './PublicRoute'
 import { PrivateRoute } from './PrivateRoute'
 import { IndexAuth } from '../components/auth/Index'
 import { Addnew } from '../components/addnew/Addnew'
+import CreateHistoria from '../components/addnew/CreateHistoria'
+import Turnos from '../components/account/Turnos'
+import MisTurnos from '../components/account/MisTurnos'
+import InfoPersonal from '../components/account/InfoPersonal'
 import { Dashboard } from '../components/addnew/Dashboard'
 import { Alumno } from '../components/addnew/Alumno'
 
@@ -105,7 +109,15 @@ export const AppRouter = (history) => {
           <PrivateRoute
             exact
             path='/addnew'
-            component={Addnew}
+            component={CreateHistoria}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
+            path='/infoperfil'
+            component={InfoPersonal}
             isAuthenticated={!!uid}
             history={history}
           />
@@ -130,6 +142,14 @@ export const AppRouter = (history) => {
             exact
             path='/alumnos'
             component={Alumnos}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
+            path='/turnos'
+            component={MisTurnos}
             isAuthenticated={!!uid}
             history={history}
           />

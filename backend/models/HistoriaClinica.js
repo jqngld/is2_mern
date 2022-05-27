@@ -17,7 +17,7 @@ const historiaSchema = new mongoose.Schema(
         ultimaDosisGripe: {
             type: Date,
             require: false,
-          },
+          }
     }
 )
 

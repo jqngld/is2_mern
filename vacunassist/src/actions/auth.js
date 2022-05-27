@@ -100,7 +100,7 @@ export const startRegister = (
       // aca deberia redirigir al login sin entrar de una pero bueno esto no lo logra
 
       Swal.fire({
-        title: 'Registro exitoso!',
+        title: 'DNI verificado con el RENAPER. Registro exitoso!',
         text: '',
         type: 'success',
         showCancelButton: false,
