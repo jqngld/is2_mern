@@ -28,6 +28,8 @@ const nuevoFiebre = async (req, res = response) => {
   const { dni } = req.body
   let dni2 = await Usuario.findById(ObjectId(dni))
 
+  
+
   function randomDate(start, end) {
     var date = new Date(+start + Math.random() * (end - start))
     return date
@@ -49,6 +51,15 @@ const nuevoFiebre = async (req, res = response) => {
         msg: 'El usuario posee más de 60 años',
       })
     } else {
+      if(dni2.historiaClinica) {
+        let fiebrehay = await HistoriaClinica.findById(ObjectId(dni2.historiaClinica.id))
+        if (fiebrehay.ultimaDosisFiebre) {
+        console.log('El usuario ya posee una vacuna contra la fiebre amarilla')
+        return res.status(201).json({
+          ok: false,
+          msg: 'El usuario ya posee una vacuna contra la fiebre amarilla',
+        })}
+      } else {
       if (!fiebreEmpty(dni2)) {
         console.log('El usuario ya posee una vacuna contra la fiebre amarilla')
         return res.status(201).json({
@@ -60,7 +71,8 @@ const nuevoFiebre = async (req, res = response) => {
           Date.now(),
           Date.now() + 7 * 24 * 60 * 60 * 1000
         )
-        let fechaza = fechita.toLocaleString('en-GB')
+        let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+        let fechaza = fechita.toLocaleString('es-AR', options)
 
         let nuevoTurno = {
           date: randomDate(Date.now(), Date.now() + 7 * 24 * 60 * 60 * 1000),
@@ -88,7 +100,7 @@ const nuevoFiebre = async (req, res = response) => {
           })
         }
       }
-    }
+    }}
   }
 }
 

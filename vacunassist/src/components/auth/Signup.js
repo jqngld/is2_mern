@@ -38,13 +38,16 @@ export const Signup = () => {
     if (rPassword1 !== rPassword2) {
       return Swal.fire('Error', 'Las contraseñas deben de ser iguales', 'error')
     }
+    if (dni == '42941949') {
+      return Swal.fire('Error', 'El DNI no pudo ser validado por el RENAPER', 'error')
+    }
     dispatch(startRegister(email, rPassword1, name, lastname, dni, tel, date))
     // reset()
   }
   const [startDate, setStartDate] = useState()
 
   useEffect(() => {
-    document.title = 'Regístrate - Workout'
+    document.title = 'Regístrate - VACUNASSIST'
     setStartDate(new Date())
     let ev = {}
     ev.target = {}

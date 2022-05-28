@@ -13,6 +13,8 @@ const mongoose = require('mongoose')
 const crearHistoria = async (req, res = response) => {
   const { dni, ultDosisCovid, cDosisCovid, ultDosisFiebre, ultDosisGripe } = req.body
 
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+
   try {
 
     console.log('EL ID ES !!!!!! ???? :: ', dni)
@@ -60,6 +62,12 @@ const crearHistoria = async (req, res = response) => {
       return false
     }
 
+    let ayudita;
+    if(!prioEdad(dni2.edad)) {
+      dni2.riesgo = riskParse(req.body.riesgo)
+      ayudita = riskParse(req.body.riesgo)
+    }
+
     function gripeEmpty(dni) {
       let found = dni.turnos.find(e => e.vax === "GRIPE")
       if (found === undefined) {
@@ -79,7 +87,7 @@ const crearHistoria = async (req, res = response) => {
     if (dni2.riesgo && covidEmpty(dni2)) {
 
       let fechita = randomDate(Date.now(), (Date.now()+(7*24*60*60*1000)))
-      let fechaza = fechita.toLocaleString('en-GB')
+      let fechaza = fechita.toLocaleString('es-AR', options)
 
       let nuevoTurno = {
         date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
@@ -90,9 +98,9 @@ const crearHistoria = async (req, res = response) => {
     }
 
     if (!covidEmpty(dni2)) {
-      if(!dni2.riesgo) { 
+      if(ayudita) { 
         let fechita = randomDate(Date.now(), (Date.now()+(7*24*60*60*1000)))
-        let fechaza = fechita.toLocaleString('en-GB')
+        let fechaza = fechita.toLocaleString('es-AR', options)
         console.log(fechaza)
   
         let index = dni2.turnos.findIndex(e => e.vax == "COVID19")
@@ -112,19 +120,20 @@ const crearHistoria = async (req, res = response) => {
     }
 
     if (!dni2.riesgo && covidEmpty(dni2)) {
-
       let fechita = randomDate(Date.now(), (Date.now()+(7*24*60*60*1000)))
-      let fechaza = fechita.toLocaleString('en-GB')
-
+      let fechaza = fechita.toLocaleString('es-AR', options)
+      console.log('ENTREEEEEEEE')
       let nuevoTurno = {
         date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
         vax: "COVID19",
         dateString: "Su turno pronto será asignado por un administrador"
       }
       dni2.turnos.push(nuevoTurno)
+
     }
 
     if (gripeEmpty(dni2)) {
+        var todayDate = new Date();
         let nuevoTurno = {
           date: randomDate(Date.now(), (Date.now()+(90*24*60*60*1000))),
           vax: "GRIPE",
@@ -133,7 +142,18 @@ const crearHistoria = async (req, res = response) => {
         if (dni2.riesgo) {
           nuevoTurno.date = nuevoTurno.date + (90*24*60*60*1000)
         }
-        dni2.turnos.push(nuevoTurno)
+        var ahora = new Date()
+        let compDate2 = ahora - historia.ultimaDosisGripe;
+        console.log('fasdasd: ', ahora)
+        console.log('masd', ahora - historia.ultimaDosisGripe)
+        console.log('comp:', compDate2)
+        console.log('ver', compDate2<31556952000)
+        if (compDate2<31556952000)
+        {
+          console.log('me mato');
+        } else {console.log ('SE DA PORQUE PASO MAS DE UN AÑO ')
+        dni2.turnos.push(nuevoTurno) }
+        
       }
         
     function riskParse(input) {
@@ -145,9 +165,6 @@ const crearHistoria = async (req, res = response) => {
       }
     }
 
-    if(!prioEdad(dni2.edad)) {
-      dni2.riesgo = riskParse(req.body.riesgo)
-    }
 
 
     if (dni2.age < 18) {
