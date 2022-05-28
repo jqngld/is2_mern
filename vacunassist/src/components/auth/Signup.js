@@ -41,9 +41,16 @@ export const Signup = () => {
     dispatch(startRegister(email, rPassword1, name, lastname, dni, tel, date))
     // reset()
   }
+  const [startDate, setStartDate] = useState()
 
   useEffect(() => {
     document.title = 'Regístrate - Workout'
+    setStartDate(new Date())
+    let ev = {}
+    ev.target = {}
+    ev.target.name = 'date'
+    ev.target.value = startDate
+    handleRegisterInputChange(ev)
   }, [])
 
   // datepicker
@@ -56,12 +63,15 @@ export const Signup = () => {
     ev.target.value = date
     handleRegisterInputChange(ev)
   }
-  const [startDate, setStartDate] = useState(new Date())
 
   return (
     <div className='max-h-screen overflow-x-hidden'>
       <div className=' justify-center max-w-screen p-8'>
-        <img className='w-2/3 sm:w-1/3 ' src='https://i.ibb.co/FYdLf8n/Sin-t-tulo-1.png' alt='' />
+        <img
+          className='w-2/3 sm:w-1/3 '
+          src='https://i.ibb.co/FYdLf8n/Sin-t-tulo-1.png'
+          alt=''
+        />
       </div>
 
       <div className=' flex max-w-6xl'>

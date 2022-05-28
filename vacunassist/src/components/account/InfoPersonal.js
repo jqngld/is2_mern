@@ -14,42 +14,38 @@ import { modalStyles } from '../../utils/modalStyles'
 import Card from '../../utils/card'
 import axios from 'axios'
 
-
-
 function VerPerfil() {
+  let store = useStore().getState()
+  let id = store.auth.uid
 
-    let store = useStore().getState()
-    let id = store.auth.uid
+  const [perfil, setPerfil] = useState([])
 
-    const [perfil, setPerfil] = useState([])
+  useEffect(() => {
+    axios.get('http://localhost:4000/api/user/' + id).then((res) => {
+      console.log(res.data)
+      setPerfil([res.data])
+    })
+  }, [])
 
-    useEffect(() => {
-        axios.get('http://localhost:4000/api/user/' + id)
-        .then((res) => {
-            console.log(res.data)
-            setPerfil([res.data])
-        })
-    }, [])
-
-    return (
-            <div>
-                <div className='text-white font-bold text-6xl p-2'>Mi información personal</div>
-                {
-                    Array.isArray(perfil) && perfil.map(info =>
-                    <div className='text-white font-bold text-2xl p-2'> 
-                        <h1>Nombre: {info.name}</h1> <hr className='m-4' />
-                        <h1>Apellido: {info.lastname}</h1> <hr className='m-4' />
-                        <h1>DNI: {info.dni}</h1> <hr className='m-4' />
-                        <h1>Edad: {info.age}</h1> <hr className='m-4' />
-                        <h1>Teléfono: {info.tel}</h1> <hr className='m-4' />
-                        <h1>Fecha de nacimiento: {info.date}</h1> <hr className='m-4' />
-                    </div>)
-                }
-            </div>
-        //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
-    )
-
+  return (
+    <div className='w-full pt-16'>
+      <div className='text-white font-bold text-4xl p-2 pt-24 pb-4'>
+        Mi información personal
+      </div>
+      {Array.isArray(perfil) &&
+        perfil.map((info, index) => (
+          <div key={index} className='text-white font-bold text-2xl p-2'>
+            <h1>Nombre: {info.name}</h1> <hr className='m-4' />
+            <h1>Apellido: {info.lastname}</h1> <hr className='m-4' />
+            <h1>DNI: {info.dni}</h1> <hr className='m-4' />
+            <h1>Edad: {info.age}</h1> <hr className='m-4' />
+            <h1>Teléfono: {info.tel}</h1> <hr className='m-4' />
+            <h1>Fecha de nacimiento: {info.date}</h1> <hr className='m-4' />
+          </div>
+        ))}
+    </div>
+    //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
+  )
 }
-
 
 export default VerPerfil

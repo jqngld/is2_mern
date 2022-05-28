@@ -13,34 +13,51 @@ import Modal from 'react-modal'
 import { modalStyles } from '../../utils/modalStyles'
 import Card from '../../utils/card'
 import axios from 'axios'
+import { startChecking } from '../../actions/auth'
 
+function TurnoFiebre({ turnos2 }) {
+  let store = useStore().getState()
+  let id = store.auth.uid
 
-function TurnoFiebre() {
+  const dispatch = useDispatch()
 
-    let store = useStore().getState()
-    let id = store.auth.uid
+  //   useEffect(() => {
+  //     dispatch(startChecking())
+  //   }, [])
 
-    const [turnos, setTurnos] = useState([])
+  async function handleClick(e) {
+    e.preventDefault()
 
-    function handleClick(e) {
-        e.preventDefault()
-
-        const newTurno = {
-            dni: id,
-        }
-
-        axios.post('http://localhost:4000/api/turno/nuevoturnofiebre', newTurno)
-        Swal.fire('', 'Revisá tus turnos para saber si sos elegible para recibir la vacuna contra la fiebre amarilla', 'success')
+    const newTurno = {
+      dni: id,
     }
 
-    return (
-        <div className=''>
-            <button onClick={handleClick} className='text-white w-full rounded h-8 font-bold boton-activo'>
-                Solicitar vacuna contra la fiebre amarilla
-            </button>
-        </div>
-    )
-}
+    axios
+      .post('http://localhost:4000/api/turno/nuevoturnofiebre', newTurno)
+      .then((res) => {
+        if (res.data.ok) {
+          Swal.fire('', `${res.data.msg}`, 'success')
+        } else {
+          Swal.fire('', `${res.data.msg}`, 'error')
+        }
+        dispatch(startChecking())
+      })
+      .catch((e) => {
+        console.log(e.message)
+      })
+      .finally(console.log('finally'))
+  }
 
+  return (
+    <div className=''>
+      <button
+        onClick={handleClick}
+        className='text-white w-full rounded h-8 font-bold boton-activo'
+      >
+        Solicitar vacuna contra la fiebre amarilla
+      </button>
+    </div>
+  )
+}
 
 export default TurnoFiebre

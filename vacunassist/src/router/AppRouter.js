@@ -65,20 +65,18 @@ export const AppRouter = (history) => {
         {uid !== undefined && (
           <>
             <Navbar />
+            <div
+              style={{ height: ' 100vh' }}
+              className={
+                uid !== undefined &&
+                `shadow w-auto flex-col justify-between hidden sm:flex bg-opacity-10 mr-4`
+              }
+            >
+              <>
+                <Sidebar history={history} />
+              </>
+            </div>
           </>
-        )}
-        {uid !== undefined && (
-          <div
-            style={{ height: ' 100vh' }}
-            className={
-              uid !== undefined &&
-              `shadow w-5/12 md:w-3/12 lg:w-2/12 flex-col justify-between hidden sm:flex bg-opacity-10 mr-4`
-            }
-          >
-            <>
-              <Sidebar history={history} />
-            </>
-          </div>
         )}
 
         <Switch>

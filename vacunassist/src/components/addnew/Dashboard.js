@@ -8,13 +8,13 @@ import { loadGeneral } from '../../actions/general'
 export const Dashboard = () => {
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(loadGeneral())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(loadGeneral())
+  // }, [dispatch])
 
-  useEffect(() => {
-    dispatch(loadInfo())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(loadInfo())
+  // }, [dispatch])
 
   return (
     <div className='min-h-full w-full'>

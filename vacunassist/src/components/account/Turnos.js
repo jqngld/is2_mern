@@ -14,39 +14,38 @@ import { modalStyles } from '../../utils/modalStyles'
 import Card from '../../utils/card'
 import axios from 'axios'
 
+function VerTurnos({ turnos }) {
+  // let store = useStore().getState()
+  // let id = store.auth.uid
 
-function VerTurnos() {
+  // const [turnos, setTurnos] = useState([])
 
-    let store = useStore().getState()
-    let id = store.auth.uid
+  // useEffect(() => {
+  //     axios.get('http://localhost:4000/api/turno/' + id)
+  //     .then((res) => {
+  //         console.log(res)
+  //         setTurnos(res.data.turnos)
+  //     })
+  // }, [])
 
-    const [turnos, setTurnos] = useState([])
-
-    useEffect(() => {
-        axios.get('http://localhost:4000/api/turno/' + id)
-        .then((res) => {
-            console.log(res)
-            setTurnos(res.data.turnos)
-        })
-    }, [])
-
-    return (
-            <div className='text-white text-left font-bold text-2xl flex-col p-4'>
-                {
-                    Array.isArray(turnos) && turnos.map(turno =>
-                    <div> 
-                        <h1>
-                            {turno.vax}: {turno.dateString} 
-                        </h1>
-                        <br></br>
-                    </div>)
-                }
-            </div>
-        //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
-    )
-
+  return turnos !== undefined ? (
+    <div className='text-white text-left font-bold text-2xl flex-col p-4'>
+      {Array.isArray(turnos) &&
+        turnos.map((turno, index) => (
+          <div key={index}>
+            <h1>
+              {turno.vax}: {turno.dateString}
+            </h1>
+            <br></br>
+          </div>
+        ))}
+    </div>
+  ) : (
+    <>
+      <h1>Turnos undefined</h1>
+    </>
+  )
+  //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
 }
 
-
 export default VerTurnos
-

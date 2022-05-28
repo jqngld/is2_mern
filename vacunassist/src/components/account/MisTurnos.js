@@ -17,40 +17,50 @@ import VerTurnos from './Turnos'
 import TurnoFiebre from './TurnoFiebre'
 
 function MisTurnos() {
+  let store = useStore().getState()
+  let id = store.auth.uid
 
-    let store = useStore().getState()
-    let id = store.auth.uid
+  const [turnos, setTurnos] = useState([])
+  const [cargando, setCargando] = useState(true)
 
-    const [turnos, setTurnos] = useState([])
+  useEffect(() => {
+    axios.get('http://localhost:4000/api/turno/' + id).then((res) => {
+      if (res.data.ok) {
+        setTurnos(res.data.turnos)
+        setCargando(true)
+      } else {
+        setCargando(false)
+      }
+    })
+  }, [])
 
-    useEffect(() => {
-        axios.get('http://localhost:4000/api/turno/' + id)
-        .then((res) => {
-            console.log(res)
-            setTurnos(res.data)
-        })
-    }, [])
+  //   const getTurnos = () => {
+  //     axios.get('http://localhost:4000/api/turno/' + id).then((res) => {
+  //       console.log(res)
+  //     })
+  //   }
 
-    const getTurnos = () => {
-        axios.get('http://localhost:4000/api/turno/' + id)
-        .then((res) => {
-            console.log(res)
-        })
-    }
+  return (
+    <div className='text-left '>
+      {!cargando ? (
+        <>
+          <h1>Cargando turnos...</h1>
+        </>
+      ) : (
+        <>
+          <div className='text-white font-bold text-4xl p-2'>Mis turnos</div>
+          <hr className='m' />
+          <VerTurnos turnos={turnos} />
+          <hr className='m' />
 
-    return (
-        <div className='text-center '>
-            <div className='text-white font-bold text-6xl p-2'>Mis turnos</div>
-            <hr className='m' />
-            <VerTurnos/>
-            <hr className='m' />
-            <TurnoFiebre/>
-        </div>
-        //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
-    )
-
+          {!turnos.find((e) => e.vax === 'FIEBRE AMARILLA') && (
+            <TurnoFiebre turnos2={turnos} />
+          )}
+        </>
+      )}
+    </div>
+    //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
+  )
 }
 
-
 export default MisTurnos
-
