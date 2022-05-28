@@ -39,25 +39,25 @@ const crearUsuario = async (req, res = response) => {
     req.body.is_admin = false
     req.body.turnos = []
     req.body.historiaClinica = undefined
-    
+
     function getAge(_date) {
-        var today = new Date();
-        var birthDate = new Date(_date);
-        var age = today.getFullYear() - birthDate.getFullYear();
-        var m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        return age;
+      console.log(_date)
+      var today = new Date()
+      var birthDate = new Date(_date)
+      var age = today.getFullYear() - birthDate.getFullYear()
+      // var m = today.getMonth() - birthDate.getMonth()
+      // if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      //   age--
+      // }
+      return age
     }
 
     function getRiesgo(age) {
-      if (age > 60)
-        return true;
-      return false;
-  }
+      if (age > 60) return true
+      return false
+    }
 
-    let edad = getAge(req.body.date)
+    let edad = getAge(date)
 
     const usernuevo = new Usuario({
       email: req.body.email,
@@ -69,7 +69,7 @@ const crearUsuario = async (req, res = response) => {
       age: edad,
       riesgo: getRiesgo(edad),
       turnos: [],
-      historiaClinica: null
+      historiaClinica: null,
     })
 
     // Encriptar contraseña
