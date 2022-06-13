@@ -13,6 +13,7 @@ import Modal from 'react-modal'
 import { modalStyles } from '../../utils/modalStyles'
 import Card from '../../utils/card'
 import axios from 'axios'
+import Sidebar from '../ui/Sidebar'
 
 function VerPerfil() {
   let store = useStore().getState()
@@ -28,8 +29,10 @@ function VerPerfil() {
   }, [])
 
   return (
-    <div className='w-full pt-16'>
-      <div className='text-white font-bold text-4xl p-2 pt-24 pb-4'>
+    <div className='rowC'>
+      <Sidebar/>
+      <div classname=''>
+      <div className='text-white font-bold text-4xl pb-4'>
         Mi información personal
       </div>
       {Array.isArray(perfil) &&
@@ -43,6 +46,13 @@ function VerPerfil() {
             <h1>Fecha de nacimiento: {info.date}</h1> <hr className='m-4' />
           </div>
         ))}
+        <Link to='/modificarperfil'><button
+        
+        className='text-white w-60 rounded h-8 font-bold boton-activo'
+      >
+        Modificar mi perfil
+      </button></Link></div>
+        
     </div>
     //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
   )

@@ -66,10 +66,11 @@ export const startRegister = (
   lastname,
   dni,
   tel,
-  date
+  date,
+  centro
 ) => {
   return async (dispatch) => {
-    console.log(email, password, name, lastname, dni, tel, date)
+    console.log(email, password, name, lastname, dni, tel, date, centro)
     const resp = await fetchSinToken(
       'auth/new',
       {
@@ -80,6 +81,7 @@ export const startRegister = (
         dni,
         tel,
         date,
+        centro
       },
       'POST'
     )
@@ -111,7 +113,7 @@ export const startRegister = (
         function (isConfirm) {
           if (isConfirm) {
             console.log('CONFIRMED')
-            window.location.href = `${process.env.REACT_APP_URL}login`
+            window.location.href = `${process.env.REACT_APP_URL}addnew`
           }
         },
         function () {
@@ -120,7 +122,6 @@ export const startRegister = (
       )
     } else {
       const { msg } = body
-
       if (msg !== undefined) {
         Swal.fire('Error', msg, 'error')
       } else {
@@ -136,6 +137,89 @@ export const startRegister = (
     }
   }
 }
+
+// export const startRegisterVac = (
+//   email,
+//   password,
+//   name,
+//   lastname,
+//   dni,
+//   tel,
+//   date,
+//   centro,
+//   historiaClinica
+
+// ) => {
+//   return async (dispatch) => {
+//     console.log(email, password, name, lastname, dni, tel, date, centro, historiaClinica)
+//     const resp = await fetchSinToken(
+//       'auth/new',
+//       {
+//         email,
+//         password,
+//         name,
+//         lastname,
+//         dni,
+//         tel,
+//         date,
+//         centro,
+//         historiaClinica
+//       },
+//       'POST'
+//     )
+
+//     const body = await resp.json()
+
+//     if (body.ok) {
+//       localStorage.setItem('token', body.token)
+//       localStorage.setItem('token-init-date', new Date().getTime())
+
+//       //  dispatch(
+//       //    login({
+//       //      uid: body.uid,
+//       //      name: body.name,
+//       //      is_admin: body.is_admin,
+//       //    })
+//       //  )
+//       // aca deberia redirigir al login sin entrar de una pero bueno esto no lo logra
+
+//       Swal.fire({
+//         title: 'DNI verificado con el RENAPER. Registro exitoso!',
+//         text: '',
+//         type: 'success',
+//         showCancelButton: false,
+//         confirmButtonColor: '#70f1ff',
+//         confirmButtonText: 'OK',
+//         cancelButtonText: 'Back',
+//       }).then(
+//         function (isConfirm) {
+//           if (isConfirm) {
+//             console.log('CONFIRMED')
+//             window.location.href = `${process.env.REACT_APP_URL}home`
+//           }
+//         },
+//         function () {
+//           console.log('BACK')
+//         }
+//       )
+//     } else {
+//       const { msg } = body
+
+//       if (msg !== undefined) {
+//         Swal.fire('Error', msg, 'error')
+//       } else {
+//         const { errors } = body
+//         let msg2 = ''
+//         errors &&
+//           Object.values(errors).map((element, index) => {
+//             msg2 = msg2 + '</br>' + element.msg
+//           })
+
+//         Swal.fire('Error', msg2, 'error')
+//       }
+//     }
+//   }
+// }
 
 export const startChecking = () => {
   return async (dispatch) => {

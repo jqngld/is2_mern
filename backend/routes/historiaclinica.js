@@ -6,7 +6,7 @@ const { Router } = require('express')
 const { check } = require('express-validator')
 const { validarCampos } = require('../middlewares/validar-campos')
 const {
-  crearHistoria
+  crearHistoria, asignarHistoria
 } = require('../controllers/historiasController')
 const { validarJWT } = require('../middlewares/validar-jwt')
 
@@ -15,6 +15,11 @@ const router = Router()
 router.post(
   '/nuevahistoriaclinica',
   crearHistoria,
+)
+
+router.post(
+  '/asignarhistoria/:dni',
+  asignarHistoria,
 )
 
 // router.post(

@@ -2,16 +2,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import '../../App.css'
 
-function Sidebar() {
+function Sidebar22() {
   return (
     <>
       <div
-        style={{ height: '100vh' }}
-        className='flex min-h-full flex-no-wrap w-full'
+        style={{ height: '200vh' }}
+        className='flex min-h-full flex-no-wrap'
       >
         {/* Sidebar starts */}
         {/* Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] */}
-        <div className='w-64 min-h-full  absolute sm:relative bg-gray-800 shadow flex-col justify-between hidden sm:flex bg-opacity-50'>
+        <div className='w-64 min-h-full absolute sm:relative bg-gray-800 shadow flex-col justify-between hidden sm:flex bg-opacity-50'>
           <div className='px-8'>
             <div className='h-16 w-full flex items-center'>
               <img src='https://i.ibb.co/FYdLf8n/Sin-t-tulo-1.png' alt='' />
@@ -66,11 +66,11 @@ function Sidebar() {
                     <path d='M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1' />
                   </svg>
                   <Link
-                    to='/turnos'
+                    to='/verturnosvacunador'
                     className='font-bold text-white hover:text-gray-200'
                   >
                     <span className='text-xs  ml-2 whitespace-nowrap'>
-                      Mis turnos
+                      Ver turnos
                     </span>
                   </Link>
                 </div>
@@ -96,11 +96,11 @@ function Sidebar() {
                     <path d='M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1' />
                   </svg>
                   <Link
-                    to='/infoperfil'
+                    to='/crearusuarioturno'
                     className='font-bold text-white hover:text-gray-200'
                   >
                     <span className='text-xs  ml-2 whitespace-nowrap'>
-                      Mi información personal
+                      Crear usuario con turno
                     </span>
                   </Link>
                 </div>
@@ -317,4 +317,4 @@ function Sidebar() {
   )
 }
 
-export default Sidebar
+export default Sidebar22

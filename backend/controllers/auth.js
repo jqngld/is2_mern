@@ -3,11 +3,13 @@ const bcrypt = require('bcryptjs')
 const Usuario = require('../models/Usuario')
 const { generarJWT } = require('../helpers/jwt')
 const { isObjectIdOrHexString } = require('mongoose')
+const { ObjectId } = require('mongodb');
+const { ObjectID } = require('mongoose/lib/schema/index')
 // const mongoose = require('mongoose')
 // const Excercise = require('../models/Excercise')
 
 const crearUsuario = async (req, res = response) => {
-  const { name, lastname, dni, email, date, password } = req.body
+  const { name, lastname, dni, email, date, password, centro, historiaClinica } = req.body
 
   if (name.trim() == '' || lastname.trim() == '') {
     return res.status(400).json({
@@ -38,7 +40,6 @@ const crearUsuario = async (req, res = response) => {
     // registrar usuario con is_admin en false
     req.body.is_admin = false
     req.body.turnos = []
-    req.body.historiaClinica = undefined
 
     function getAge(_date) {
       console.log(_date)
@@ -69,8 +70,17 @@ const crearUsuario = async (req, res = response) => {
       age: edad,
       riesgo: getRiesgo(edad),
       turnos: [],
+      centro: req.body.centro,
       historiaClinica: null,
+      is_vacunador: false
     })
+
+    if (req.body.dni == '21773881') {
+      usernuevo.is_vacunador = true
+    }
+    if(req.body.centro != '') {
+      usernuevo.centro = centro
+    }
 
     // Encriptar contraseña
     const salt = bcrypt.genSaltSync()
@@ -162,8 +172,40 @@ const revalidarToken = async (req, res = response) => {
   }
 }
 
+const modificarUser = async (req, res = response) => {
+  const { name, lastname, tel, password, date, centro } = req.body
+
+  var user = req.url.split('/')[2]
+  // Usuario.findById(ObjectId(dni));
+  // let info2 = await Usuario.findOne({ _id: user }) 
+  let info2 = await Usuario.findById(ObjectId(req.body.dni));
+  try {
+
+    console.log('FATIANIC : ', info2.email)
+    Usuario.updateOne({ "_id": ObjectId(user)}, {$set: {"email": req.body.email, "centro": req.body.centro, "password": req.body.password}}, function(err, res) {if (err) throw err; console.log("yass")})
+
+    res.status(201).json({
+      ok: true,
+      name: info2.name,
+      lastname: info2.lastname,
+      tel: info2.tel,
+      date: info2.date,
+      password: info2.password
+    })
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      ok: false,
+      msg: 'Por favor hable con el administrador',
+    })
+  }
+  
+}
+
 module.exports = {
   crearUsuario,
   loginUsuario,
   revalidarToken,
+  modificarUser
 }

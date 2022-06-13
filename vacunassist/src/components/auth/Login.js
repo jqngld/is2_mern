@@ -23,7 +23,7 @@ export const Login = () => {
   }
 
   useEffect(() => {
-    document.title = 'Index - Workout'
+    document.title = 'VACUNASSIST'
   }, [])
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch , Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { startChecking } from '../actions/auth'
@@ -12,7 +12,8 @@ import CreateHistoria from '../components/addnew/CreateHistoria'
 import Turnos from '../components/account/Turnos'
 import MisTurnos from '../components/account/MisTurnos'
 import InfoPersonal from '../components/account/InfoPersonal'
-import { Dashboard } from '../components/addnew/Dashboard'
+import EditPerfil from '../components/account/EditPerfil'
+import Dashboard from '../components/addnew/Dashboard'
 import { Alumno } from '../components/addnew/Alumno'
 
 import { Navbar } from '../components/ui/Navbar'
@@ -23,6 +24,9 @@ import { Signup } from '../components/auth/Signup'
 import { Alumnos } from '../components/Alumnos'
 import { Cuenta } from '../components/Cuenta'
 import { FormRutine } from '../components/addnew/FormRutine'
+
+import { VerTurnosVac } from '../components/account/VerTurnosVacunador'
+import CreateUsuarioTurno from '../components/addnew/CreateUsuarioTurno'
 
 export const AppRouter = (history) => {
   const dispatch = useDispatch()
@@ -73,13 +77,13 @@ export const AppRouter = (history) => {
               }
             >
               <>
-                <Sidebar history={history} />
+                
               </>
             </div>
           </>
         )}
 
-        <Switch>
+        <Switch >
           <PublicRoute
             exact
             path='/index'
@@ -138,6 +142,14 @@ export const AppRouter = (history) => {
 
           <PrivateRoute
             exact
+            path='/modificarperfil'
+            component={EditPerfil}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
             path='/alumnos'
             component={Alumnos}
             isAuthenticated={!!uid}
@@ -168,8 +180,24 @@ export const AppRouter = (history) => {
             history={history}
           />
 
+          <PrivateRoute
+            exact
+            path='/crearusuarioturno'
+            component={CreateUsuarioTurno}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
+            path='/verturnosvacunador'
+            component={VerTurnosVac}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
           <Redirect to='/home' />
-        </Switch>
+        </Switch >
       </div>
     </div>
   )

@@ -3,12 +3,41 @@ const bcrypt = require('bcryptjs')
 const bodyParser = require('body-parser')
 const Usuario = require('../models/Usuario')
 const HistoriaClinica = require('../models/HistoriaClinica')
+const Turno = require('../models/Turno')
 const { isDate } = require('../helpers/isDate')
 const { generarJWT } = require('../helpers/jwt')
 ObjectId = require('mongodb').ObjectId;
 const mongoose = require('mongoose')
 // const mongoose = require('mongoose')
 // const Excercise = require('../models/Excercise')
+
+
+const asignarHistoria = async (req, res = response) => {
+
+  const { dni, ultDosisCovid, cDosisCovid, ultDosisFiebre, ultDosisGripe } = req.body
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+
+  var user2 = req.url.split('/')[2]
+  console.log(user2)
+
+  const historia = new HistoriaClinica({
+    ultimaDosisCovid: req.body.ultDosisCovid,
+    cantidadDosisCovid: req.body.cDosisCovid,
+    ultimaDosisGripe: req.body.ultDosisGripe,
+    ultimaDosisFiebre: req.body.ultDosisFiebre
+  })
+
+  let usuario = await Usuario.findOne({ dni: user2 }).exec()
+
+  console.log(usuario.dni)
+
+  console.log('USER ENCONTRADO :: ', usuario.name)
+
+  await historia.save()
+
+  usuario.historiaClinica = ObjectId(historia._id)
+  await usuario.save()
+}
 
 const crearHistoria = async (req, res = response) => {
   const { dni, ultDosisCovid, cDosisCovid, ultDosisFiebre, ultDosisGripe } = req.body
@@ -42,10 +71,6 @@ const crearHistoria = async (req, res = response) => {
     console.log(historia.ultimaDosisGripe)
     console.log(historia.ultimaDosisFiebre)
     console.log(historia.cantidadDosisCovid)
-    // HistoriaClinica.ultimaDosisCovid = ultDosisCovid
-    // HistoriaClinica.cantidadDosisCovid = cDosisCovid
-    // HistoriaClinica.ultimaDosisFiebre = ultDosisFiebre
-    // HistoriaClinica.ultimaDosisGripe = ultDosisGripe
 
     await historia.save()
 
@@ -84,17 +109,21 @@ const crearHistoria = async (req, res = response) => {
 
     dni2.historiaClinica = historia.id
 
-    if (dni2.riesgo && covidEmpty(dni2)) {
+    if (dni2.riesgo && covidEmpty(dni2) && historia.cantidadDosisCovid < 2) {
 
       let fechita = randomDate(Date.now(), (Date.now()+(7*24*60*60*1000)))
       let fechaza = fechita.toLocaleString('es-AR', options)
 
-      let nuevoTurno = {
+      let nuevoTurno = new Turno({
         date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
         vax: "COVID19",
-        dateString: fechaza
-      }
+        dateString: fechaza,
+        paciente: dni2.email
+      })
+
       dni2.turnos.push(nuevoTurno)
+      await nuevoTurno.save()
+
     }
 
     if (!covidEmpty(dni2)) {
@@ -108,53 +137,70 @@ const crearHistoria = async (req, res = response) => {
   
         console.log('PATRISIA', index)
   
-        let nuevoTurno = {
+        let nuevoTurno = new Turno ({
           date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
           vax: "COVID19",
-          dateString: fechaza
-        }
-        dni2.turnos.push(nuevoTurno)}
+          dateString: fechaza,
+          paciente: dni2.email
+        })
 
-      
+        dni2.turnos.push(nuevoTurno)}
+        await nuevoTurno.save()
 
     }
 
-    if (!dni2.riesgo && covidEmpty(dni2)) {
+    if (!dni2.riesgo && covidEmpty(dni2) && historia.cantidadDosisCovid < 2) {
+
       let fechita = randomDate(Date.now(), (Date.now()+(7*24*60*60*1000)))
       let fechaza = fechita.toLocaleString('es-AR', options)
       console.log('ENTREEEEEEEE')
-      let nuevoTurno = {
+
+      let nuevoTurno = new Turno({
         date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
         vax: "COVID19",
-        dateString: "Su turno pronto será asignado por un administrador"
-      }
+        dateString: "Su turno pronto será asignado por un administrador",
+        paciente: dni2.email
+      })
+
       dni2.turnos.push(nuevoTurno)
+      await nuevoTurno.save()
 
     }
 
     if (gripeEmpty(dni2)) {
-        var todayDate = new Date();
-        let nuevoTurno = {
-          date: randomDate(Date.now(), (Date.now()+(90*24*60*60*1000))),
+        let nuevoTurno = new Turno({
+          date: '', //randomDate(Date.now(), (Date.now()+(90*24*60*60*1000))),
           vax: "GRIPE",
-          dateString: "Su turno pronto será asignado por un administrador"
-        }
-        if (dni2.riesgo) {
-          nuevoTurno.date = nuevoTurno.date + (90*24*60*60*1000)
-        }
+          dateString: '',//date.toLocaleString('es-AR', options)
+          paciente: dni2.email
+        })
+
         var ahora = new Date()
         let compDate2 = ahora - historia.ultimaDosisGripe;
-        console.log('fasdasd: ', ahora)
-        console.log('masd', ahora - historia.ultimaDosisGripe)
-        console.log('comp:', compDate2)
-        console.log('ver', compDate2<31556952000)
+
         if (compDate2<31556952000)
         {
-          console.log('me mato');
-        } else {console.log ('SE DA PORQUE PASO MAS DE UN AÑO ')
-        dni2.turnos.push(nuevoTurno) }
-        
-      }
+          if (dni2.riesgo) {
+            nuevoTurno.date = randomDate(Date.now(), (Date.now()+(455*24*60*60*1000)))
+            nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
+          } else {
+            nuevoTurno.date = randomDate(Date.now(), (Date.now()+(545*24*60*60*1000)))
+            nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
+          }
+        } else { 
+          if (dni2.riesgo) {
+            nuevoTurno.date = randomDate(Date.now(), (Date.now()+(90*24*60*60*1000)))
+            nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
+          } else {
+            nuevoTurno.date = randomDate(Date.now(), (Date.now()+(180*24*60*60*1000)))
+            nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
+          }
+        }
+
+      dni2.turnos.push(nuevoTurno)
+      await nuevoTurno.save()
+    }
+
         
     function riskParse(input) {
       if (input === 'true') {
@@ -165,9 +211,7 @@ const crearHistoria = async (req, res = response) => {
       }
     }
 
-
-
-    if (dni2.age < 18) {
+    if (req.body.cDosisCovid == 2 || dni2.age < 18) {
       let index = dni2.turnos.findIndex(e => e.vax == "COVID19")
       dni2.turnos.splice(index, 1);
     }
@@ -289,4 +333,5 @@ const crearHistoria = async (req, res = response) => {
 
 module.exports = {
   crearHistoria,
+  asignarHistoria
 }

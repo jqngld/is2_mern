@@ -15,6 +15,8 @@ import Card from '../../utils/card'
 import axios from 'axios'
 import VerTurnos from './Turnos'
 import TurnoFiebre from './TurnoFiebre'
+import TurnoGripe from './TurnoGripe'
+import Sidebar from '../ui/Sidebar'
 
 function MisTurnos() {
   let store = useStore().getState()
@@ -41,13 +43,15 @@ function MisTurnos() {
   //   }
 
   return (
-    <div className='text-left '>
+    <div className='text-left rowC  '>
       {!cargando ? (
         <>
           <h1>Cargando turnos...</h1>
         </>
       ) : (
         <>
+        <Sidebar/>
+        <div className='w-full'>
           <div className='text-white font-bold text-4xl p-2'>Mis turnos</div>
           <hr className='m' />
           <VerTurnos turnos={turnos} />
@@ -56,6 +60,8 @@ function MisTurnos() {
           {!turnos.find((e) => e.vax === 'FIEBRE AMARILLA') && (
             <TurnoFiebre turnos2={turnos} />
           )}
+            <TurnoGripe turnos2={turnos} />
+          </div>
         </>
       )}
     </div>

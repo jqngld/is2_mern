@@ -14,6 +14,10 @@ const turnoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  paciente: {
+    type: String,
+    required: true
+  },
 })
 
 module.exports = mongoose.model('Turno', turnoSchema)

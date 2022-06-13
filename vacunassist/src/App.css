@@ -14,6 +14,8 @@ body {
   height: 100%;
 }
 
+.rowC{display:flex; flex-direction:row;}
+
 /* Modal */
 .ReactModalPortal > div {
   opacity: 0;
@@ -116,6 +118,7 @@ body {
 }
 
 .boton-inactivo {
+  margin: 0.5rem;
   background-color: grey;
 }
 

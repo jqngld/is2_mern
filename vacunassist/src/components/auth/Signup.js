@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm'
 import { startRegister } from '../../actions/auth'
 import Swal from 'sweetalert2'
@@ -22,11 +22,17 @@ export const Signup = () => {
     date: undefined,
     rPassword1: '',
     rPassword2: '',
+    cant: '',
+    fechaCovid: '',
+    fechaFiebre: '',
+    risk: '',
+    fechaGripe: '',
+    centro: '',
   })
 
   const [error, setError] = useState('')
 
-  const { name, email, rPassword1, rPassword2, lastname, dni, tel, date } =
+  const { name, email, rPassword1, rPassword2, lastname, dni, tel, date, centro, cant, fechaCovid, fechaFiebre, fechaGripe, risk } =
     formRegisterValues
 
   const isInvalid2 =
@@ -41,13 +47,13 @@ export const Signup = () => {
     if (dni == '42941949') {
       return Swal.fire('Error', 'El DNI no pudo ser validado por el RENAPER', 'error')
     }
-    dispatch(startRegister(email, rPassword1, name, lastname, dni, tel, date))
+    dispatch(startRegister(email, rPassword1, name, lastname, dni, tel, date, centro))
     // reset()
   }
   const [startDate, setStartDate] = useState()
 
   useEffect(() => {
-    document.title = 'Regístrate - VACUNASSIST'
+    document.title = 'VACUNASSIST'
     setStartDate(new Date())
     let ev = {}
     ev.target = {}
@@ -256,6 +262,22 @@ export const Signup = () => {
                 Deben coincidir
               </span>
             </div>
+            <div className='w-full sm:w-1/2 p-4 '>
+              <span className='text-white font-bold text-xl flex-start flex  pl-2'>
+                Seleccioná el centro más cercano a la zona de tu domicilio *
+              </span>
+              <select
+                onChange={handleRegisterInputChange}
+                value={centro}
+                name='centro'
+                className='form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30'
+              >
+                <option value='Centro Cementerio' selected='true'>Centro Zona Cementerio</option>
+                <option value='Centro Municipalidad'>Centro Zona Municipalidad</option>
+                <option value='Centro Terminal'>Centro Zona Terminal</option>
+              </select>
+            </div>
+            
 
             {/* historia clinica */}
             {/* <div className={'flex visible w-full'}>
@@ -297,6 +319,105 @@ export const Signup = () => {
               </div>
             </div> */}
           </div>
+          {/*<hr className='m-4' />
+           <div className='p-2 text-gray-700   items-center cursor-pointer'>
+              <h1 className='px-4 sm:px-8 flex w-full text-3xl semititle font-bold'>
+                Tu historia clínica
+              </h1>
+              <span
+                className={
+                  true
+                    ? 'visible text-white px-4 sm:px-8 italic mt-4'
+                    : 'invisible'
+                }
+              >
+              
+              </span>
+            </div>
+          <div className='form-group'>
+            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
+              Cantidad de dosis de vacuna(s) contra el COVID19 que recibiste
+            </span>
+            <select
+              onChange={handleRegisterInputChange}
+              value={cant}
+              name='cant'
+              className='form-select w-full h-10 rounded m-2 bg-black bg-opacity-30'
+            >
+              <option value='0' selected='true'>
+                0
+              </option>
+              <option value='1'>
+                1
+              </option>
+              <option value='2'>
+                2
+              </option>
+            </select>
+          </div>
+        
+          <div className='form-group'>
+            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
+              Fecha de tu última dosis recibida contra el COVID19
+            </span>
+            <input
+              // onChange={handleRegisterInputChange}
+              onChange={handleRegisterInputChange}
+              type='date'
+              id='fechaCovid'
+              name='fechaCovid'
+              value={fechaCovid}
+              autoComplete='off'
+              className='form-control text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
+              disabled={formRegisterValues.cant == 0 ? true : false}
+            ></input>
+          </div>
+        
+          <div className='form-group'>
+            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
+              Fecha de tu última dosis recibida contra la gripe
+            </span>
+            <input
+              onChange={handleRegisterInputChange}
+              type='date'
+              name='fechaGripe'
+              value={fechaGripe}
+              autoComplete='off'
+              className='form-control text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
+            ></input>
+          </div>
+        
+          <div className='form-group'>
+            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
+              Fecha de tu última dosis recibida contra la fiebre amarilla
+            </span>
+            <input
+              onChange={handleRegisterInputChange}
+              type='date'
+              name='fechaFiebre'
+              value={fechaFiebre}
+              autoComplete='off'
+              className='form-control text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
+            ></input>
+          </div>
+        
+          <div className='form-group'>
+            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
+              ¿Tiene factores preexistentes que lo convierten en un paciente de
+              riesgo?
+            </span>
+            <select
+              onChange={handleRegisterInputChange}
+              value={risk}
+              name='risk'
+              className='form-select w-full h-10 rounded m-2 bg-black bg-opacity-30'
+            >
+              <option value='true' selected='true'>
+                Sí
+              </option>
+              <option value='false'>No</option>
+            </select>
+          </div> */}
           <div className='flex'>
             <div className='w-1/2 mr-2'>
               <Link to='/'>

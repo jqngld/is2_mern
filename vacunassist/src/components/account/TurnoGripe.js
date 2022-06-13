@@ -15,7 +15,7 @@ import Card from '../../utils/card'
 import axios from 'axios'
 import { startChecking } from '../../actions/auth'
 
-function TurnoFiebre({ turnos2 }) {
+function TurnoGripe({ turnos2 }) {
   let store = useStore().getState()
   let id = store.auth.uid
 
@@ -25,20 +25,30 @@ function TurnoFiebre({ turnos2 }) {
   //     dispatch(startChecking())
   //   }, [])
 
+  function checkGripe() {
+    if (turnos2.find((e) => e.vax === 'GRIPE')) {
+        return true
+    }
+    return false
+  }
+
   async function handleClick(e) {
     e.preventDefault()
+    console.log('asd: ' , checkGripe)
 
     const newTurno = {
       dni: id,
     }
 
     axios
-      .post('http://localhost:4000/api/turno/nuevoturnofiebre', newTurno)
+      .post('http://localhost:4000/api/turno/nuevoturnogripe', newTurno)
       .then((res) => {
         if (res.data.ok) {
           Swal.fire('', `${res.data.msg}`, 'success')
+          console.log(res.data.msg)
         } else {
           Swal.fire('', `${res.data.msg}`, 'error')
+          console.log(res.data.msg)
         }
         dispatch(startChecking())
       })
@@ -51,13 +61,14 @@ function TurnoFiebre({ turnos2 }) {
   return (
     <div className=''>
       <button
+        disabled={checkGripe() ? true : false}
         onClick={handleClick}
-        className='text-white w-full rounded h-8 text-sm font-bold boton-activo'
-      >
-        Solicitar vacuna contra la fiebre amarilla
+        className={"text-white w-full rounded h-8 text-sm font-bold " + (checkGripe() ? 'opacity-50 boton-inactivo' : 'boton-activo')}
+      > 
+        Solicitar vacuna contra la gripe
       </button>
     </div>
   )
 }
 
-export default TurnoFiebre
+export default TurnoGripe

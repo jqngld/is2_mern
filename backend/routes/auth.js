@@ -9,6 +9,7 @@ const {
   crearUsuario,
   loginUsuario,
   revalidarToken,
+  modificarUser,
 } = require('../controllers/auth')
 const { validarJWT } = require('../middlewares/validar-jwt')
 
@@ -38,6 +39,11 @@ router.post(
     validarCampos,
   ],
   loginUsuario
+)
+
+router.post(
+  '/editperfil/:id',
+  modificarUser
 )
 
 router.get('/renew', validarJWT, revalidarToken)

@@ -26,6 +26,10 @@ const Usuario = new mongoose.Schema({
     require: true,
     unique: true,
   },
+  centro: {
+    type: String,
+    require: true
+  },
   tel: {
     type: Number,
     require: true,
@@ -45,12 +49,18 @@ const Usuario = new mongoose.Schema({
   is_admin: {
     type: Boolean,
   },
+  is_vacunador: {
+    type: Boolean,
+  },
   turnos: {
-    type: [],
+    type: [], 
   },
   historiaClinica: {
     type: ObjectId,
     ref: 'HistoriaClinica'
+  },
+  vacunasRecibidas: {
+    type: []
   }
   }
 )

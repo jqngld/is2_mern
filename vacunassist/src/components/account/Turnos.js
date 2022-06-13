@@ -29,6 +29,7 @@ function VerTurnos({ turnos }) {
   // }, [])
 
   return turnos !== undefined ? (
+    turnos.length !=0 ? (
     <div className='text-white text-left font-bold text-2xl flex-col p-4'>
       {Array.isArray(turnos) &&
         turnos.map((turno, index) => (
@@ -39,7 +40,7 @@ function VerTurnos({ turnos }) {
             <br></br>
           </div>
         ))}
-    </div>
+    </div> ) : ( <> <h1 className='text-white text-left font-bold flex-col p-4'> No hay ningún turno programado. </h1> </>)
   ) : (
     <>
       <h1>Turnos undefined</h1>
