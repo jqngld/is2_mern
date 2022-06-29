@@ -28,7 +28,7 @@ export const VerTurnosVac = () => {
 
       setStartDate(event)
 
-      axios.get('http://localhost:4000/api/turno/turnosfecha/' + event.toLocaleString('es-AR').split(',')[0].replaceAll('/', '-'))
+      axios.get('http://localhost:4000/api/turno/turnosfecha/' + event.toLocaleString('es-AR').split(',')[0].replaceAll('/', '-')+ '/' + id )
       .then((res) => {
         setTurnos(res.data)
       })
@@ -37,12 +37,10 @@ export const VerTurnosVac = () => {
   
     useEffect(() => {
       setStartDate(new Date())
-      axios.get('http://localhost:4000/api/turno/turnosfecha/' + new Date().toLocaleString('es-AR').split(',')[0].replaceAll('/', '-'))
+      axios.get('http://localhost:4000/api/turno/turnosfecha/' + new Date().toLocaleString('es-AR').split(',')[0].replaceAll('/', '-') + '/' + id )
       .then((res) => {
         setTurnos(res.data)
       })
-
-
       axios.get('http://localhost:4000/api/user/' + id).then((res) => {
         console.log(res.data)
         setPerfil(res.data)

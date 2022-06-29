@@ -8,6 +8,7 @@ const { isDate } = require('../helpers/isDate')
 const { generarJWT } = require('../helpers/jwt')
 ObjectId = require('mongodb').ObjectId;
 const mongoose = require('mongoose')
+const Centro = require('../models/Centro')
 // const mongoose = require('mongoose')
 // const Excercise = require('../models/Excercise')
 
@@ -118,7 +119,8 @@ const crearHistoria = async (req, res = response) => {
         date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
         vax: "COVID19",
         dateString: fechaza,
-        paciente: dni2.email
+        paciente: dni2.email,
+        centro: ObjectId(dni2.centro)
       })
 
       dni2.turnos.push(nuevoTurno)
@@ -141,7 +143,8 @@ const crearHistoria = async (req, res = response) => {
           date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
           vax: "COVID19",
           dateString: fechaza,
-          paciente: dni2.email
+          paciente: dni2.email,
+          centro: ObjectId(dni2.centro)
         })
 
         dni2.turnos.push(nuevoTurno)}
@@ -159,7 +162,8 @@ const crearHistoria = async (req, res = response) => {
         date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
         vax: "COVID19",
         dateString: "Su turno pronto será asignado por un administrador",
-        paciente: dni2.email
+        paciente: dni2.email,
+        centro: ObjectId(dni2.centro)
       })
 
       dni2.turnos.push(nuevoTurno)
@@ -172,7 +176,8 @@ const crearHistoria = async (req, res = response) => {
           date: '', //randomDate(Date.now(), (Date.now()+(90*24*60*60*1000))),
           vax: "GRIPE",
           dateString: '',//date.toLocaleString('es-AR', options)
-          paciente: dni2.email
+          paciente: dni2.email,
+          centro: ObjectId(dni2.centro)
         })
 
         var ahora = new Date()

@@ -1,83 +1,112 @@
 import { React, useState, useEffect } from "react";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { useForm } from '../../hooks/useForm'
+import { useForm } from "../../hooks/useForm";
 import Swal from "sweetalert2";
 import { modalStyles } from "../../utils/modalStyles";
 import axios from "axios";
-import { startRegisterVac } from '../../actions/auth'
+import { startRegisterVac } from "../../actions/auth";
 import Sidebar22 from "../ui/SidebarVac";
-import DatePicker from 'react-datepicker'
+import DatePicker from "react-datepicker";
+import { array } from "prop-types";
 
 function CreateUsuarioTurno() {
   let store = useStore().getState();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-//   const [input, setInput] = useState({
-//     cant: "0",
-//     fechaCovid: '',
-//     fechaGripe: '',
-//     fechaFiebre: '',
-//     risk: '',
-//     checkGripe: '',
-//     checkFiebre: '',
-//     name: '',
-//     lastname: '',
-//     tel: '',
-//     dni: '',
-//     email: '',
-//     date: undefined,
-//     password: makeid(6),
-//     cant: '',
-//     fechaCovid: '',
-//     fechaFiebre: '',
-//     risk: '',
-//     fechaGripe: '',
-//     centro: '',
-//     vacuna_recibida: '',
-//   });
+  //   const [input, setInput] = useState({
+  //     cant: "0",
+  //     fechaCovid: '',
+  //     fechaGripe: '',
+  //     fechaFiebre: '',
+  //     risk: '',
+  //     checkGripe: '',
+  //     checkFiebre: '',
+  //     name: '',
+  //     lastname: '',
+  //     tel: '',
+  //     dni: '',
+  //     email: '',
+  //     date: undefined,
+  //     password: makeid(6),
+  //     cant: '',
+  //     fechaCovid: '',
+  //     fechaFiebre: '',
+  //     risk: '',
+  //     fechaGripe: '',
+  //     centro: '',
+  //     vacuna_recibida: '',
+  //   });
 
-const [formRegisterValues, handleRegisterInputChange, reset] = useForm({
-    name: '',
-    lastname: '',
+  const [formRegisterValues, handleRegisterInputChange, reset] = useForm({
+    name: "",
+    lastname: "",
     tel: 0,
     dni: 0,
-    email: '',
+    email: "",
     date: undefined,
     password: makeid(6),
-    cant: '',
-    fechaCovid: '',
-    fechaFiebre: '',
-    risk: '',
-    fechaGripe: '',
-    centro: '',
-    vacuna_recibida: '',
-  })
+    cant: "",
+    fechaCovid: "",
+    fechaFiebre: "",
+    risk: "",
+    fechaGripe: "",
+    centro: "",
+    vacuna_recibida: "",
+  });
 
-  let { name, email, password, lastname, dni, tel, date, centro, cant, fechaCovid, fechaFiebre, fechaGripe, risk, vacuna_recibida,
-checkGripe, checkFiebre } =
-    formRegisterValues
+  let {
+    name,
+    email,
+    password,
+    lastname,
+    dni,
+    tel,
+    date,
+    centro,
+    cant,
+    fechaCovid,
+    fechaFiebre,
+    fechaGripe,
+    risk,
+    vacuna_recibida,
+    checkGripe,
+    checkFiebre,
+  } = formRegisterValues;
 
-  const [startDate, setStartDate] = useState()
+  const [startDate, setStartDate] = useState();
+  const [centros, setCentros] = useState([]);
+  let arrayCentros = []
 
   useEffect(() => {
-    document.title = 'VACUNASSIST'
-    setStartDate(new Date())
-    let ev = {}
-    ev.target = {}
-    ev.target.name = 'date'
-    ev.target.value = startDate
-    handleRegisterInputChange(ev)
-  }, [])
+    axios.get("http://localhost:4000/api/centros/getallcentros").then((res) => {
+      setCentros(res.data);
+      arrayCentros = res.data.centros
+      console.log(res.data.centros)
+    });
+    document.title = "VACUNASSIST";
+    setStartDate(new Date());
+    let ev = {};
+    ev.target = {};
+    ev.target.name = "date";
+    ev.target.value = startDate;
+    handleRegisterInputChange(ev);
+    let listaCentros = arrayCentros.length > 0
+    	&& arrayCentros.map((item, i) => {
+      return (
+        <option key={i} value={item.id}>{item.name}</option>
+      )
+    }, this);
+  }, []);
 
   const handleDate = (date) => {
-    setStartDate(date)
-    let ev = {}
-    ev.target = {}
-    ev.target.name = 'date'
-    ev.target.value = date
-    handleRegisterInputChange(ev)
-  }
+    setStartDate(date);
+    let ev = {};
+    ev.target = {};
+    ev.target.name = "date";
+    ev.target.value = date;
+    handleRegisterInputChange(ev);
+  };
 
   function makeid(length) {
     var result = "";
@@ -90,96 +119,86 @@ checkGripe, checkFiebre } =
     return result;
   }
 
-//   function handleRegisterInputChange(event) {
-
-//     const { name, value } = event.target;
-
-//     setInput((prevInput) => {
-//       return {
-//         ...prevInput,
-//         [name]: value,
-//       };
-//     });
-//   }
-
-  function validateEmail(email) 
-  {
-    if(email.length != undefined) {
+  function validateEmail(email) {
+    if (email.length != undefined) {
       var re = /\S+@\S+\.\S+/;
       return re.test(email);
-    } else return true
+    } else return true;
   }
 
   function handleClick(event) {
     event.preventDefault();
-    console.log('email', email)
-    console.log('nom', name)
-    console.log('pass', password)
-    console.log('dni', dni)
-
+    console.log("email", email);
+    console.log("nom", name);
+    console.log("pass", password);
+    console.log("dni", dni);
 
     if (!validateEmail(email) && email != undefined) {
-        return Swal.fire('Error', 'El formato del email no es válido.', 'error')
+      return Swal.fire("Error", "El formato del email no es válido.", "error");
     }
 
-    if (formRegisterValues.cant == 0) { // si la cantidad de covid19 es 0 no se recibio ninguna, se deja la fecha vacia
-        formRegisterValues.fechaCovid = '';
+    if (formRegisterValues.cant == 0) {
+      // si la cantidad de covid19 es 0 no se recibio ninguna, se deja la fecha vacia
+      formRegisterValues.fechaCovid = "";
     }
     if (!formRegisterValues.checkFiebre) {
-        formRegisterValues.fechaFiebre = "";
+      formRegisterValues.fechaFiebre = "";
     }
     if (!formRegisterValues.checkGripe) {
-        formRegisterValues.fechaGripe = "";
+      formRegisterValues.fechaGripe = "";
     }
     if (formRegisterValues.vacuna_recibida == "COVID19") {
-        formRegisterValues.fechaCovid = new Date()
+      formRegisterValues.fechaCovid = new Date();
     }
     if (formRegisterValues.vacuna_recibida == "GRIPE") {
-        formRegisterValues.fechaGripe = new Date()
+      formRegisterValues.fechaGripe = new Date();
     }
     if (formRegisterValues.vacuna_recibida == "FIEBRE AMARILLA") {
-        formRegisterValues.fechaFiebre = new Date()
+      formRegisterValues.fechaFiebre = new Date();
     }
 
     const newHistoria = {
       ultDosisCovid: formRegisterValues.fechaCovid,
-      cDosisCovid: formRegisterValues.cant,
+      cDosisCovid: 0,
       ultDosisFiebre: formRegisterValues.fechaFiebre,
       ultDosisGripe: formRegisterValues.fechaGripe,
       riesgo: formRegisterValues.risk,
     };
 
-    console.log("FIEBRE :: ", newHistoria.ultDosisFiebre)
-    console.log("GRIPE :", newHistoria.ultDosisGripe)
-    console.log("CANT :: ", newHistoria.cDosisCovid)
-    console.log("COVID :: ", newHistoria.ultDosisCovid)
+    console.log("FIEBRE :: ", newHistoria.ultDosisFiebre);
+    console.log("GRIPE :", newHistoria.ultDosisGripe);
+    console.log("CANT :: ", newHistoria.cDosisCovid);
+    console.log("COVID :: ", newHistoria.ultDosisCovid);
 
     const newUsuarioPorVacunador = {
-        name: formRegisterValues.name,
-        lastname: formRegisterValues.lastname,
-        email: formRegisterValues.email,
-        tel: formRegisterValues.tel,
-        dni: formRegisterValues.dni,
-        password: formRegisterValues.password,
-        date: formRegisterValues.date,
-        centro: formRegisterValues.centro
-    }
+      name: formRegisterValues.name,
+      lastname: formRegisterValues.lastname,
+      email: formRegisterValues.email,
+      tel: formRegisterValues.tel,
+      dni: formRegisterValues.dni,
+      password: formRegisterValues.password,
+      date: formRegisterValues.date,
+      centro: formRegisterValues.centro,
+    };
 
     // dispatch(startRegisterVac(email, password, name, lastname, dni, tel, date, centro, newHistoria))
+    axios
+      .post(
+        "http://localhost:4000/api/user/nuevouserporvac",
+        newUsuarioPorVacunador
+      )
+      .then(function (response) {
+        console.log(response);
+        Swal.fire("Registro exitoso", response.data.msg, "success");
         axios.post(
-            "http://localhost:4000/api/user/nuevouserporvac",
-            newUsuarioPorVacunador
-        ).then(function (response) {
-            console.log(response)
-            Swal.fire('Registro exitoso', response.data.msg, 'success')
-            axios.post(
-                "http://localhost:4000/api/historiaclinica/asignarhistoria/" + newUsuarioPorVacunador.dni,
-               newHistoria
-           )
-          })
-        .catch(function (err) {
-            Swal.fire('Error', err.response.data.msg, 'error')
-        })
+          "http://localhost:4000/api/historiaclinica/asignarhistoria/" +
+            newUsuarioPorVacunador.dni,
+          newHistoria
+        );
+      })
+      .catch(function (err) {
+        Swal.fire("Error", err.response.data.msg, "error");
+      });
   }
 
   return (
@@ -254,7 +273,7 @@ checkGripe, checkFiebre } =
             E-mail
           </span>
           <input
-            style={{ width: 250}}
+            style={{ width: 250 }}
             className="form-group text-sm p-4 text-white py-3 rounded m-2 bg-black bg-opacity-30"
             type="email"
             placeholder="Ingresá el email del paciente..."
@@ -262,57 +281,59 @@ checkGripe, checkFiebre } =
             value={email}
             onChange={handleRegisterInputChange}
           />
-         <span className='text-white font-bold text-xl flex-start flex pl-2'>
+          <span className="text-white font-bold text-xl flex-start flex pl-2">
             Fecha de Nacimiento
-         </span>
-            <div className='form-group text-sm p-4 w-full py-3 rounded m-2 bg-black bg-opacity-30'>
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date) => handleDate(date)}
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode='select'
-                  dateFormat='dd/MM/yyyy'
-                />     
-            </div>
-            {/* </div><div className="w-full sm:w-1/2 p-4 rowC"> */}
-            <span className='text-white font-bold text-xl flex-start flex  pl-2'>
-                Centro de preferencia
-              </span>
-              <select
-                onChange={handleRegisterInputChange}
-                value={centro}
-                name='centro'
-                className='form-group text-white text-sm rounded m-2 bg-black bg-opacity-30'
-              >
-                <option value='' selected='true' disabled="true">Seleccioná un centro</option>
-                <option value='Centro Cementerio'>Centro Zona Cementerio</option>
-                <option value='Centro Municipalidad'>Centro Zona Municipalidad</option>
-                <option value='Centro Terminal'>Centro Zona Terminal</option>
-              </select>
+          </span>
+          <div className="form-group text-sm p-4 w-full py-3 rounded m-2 bg-black bg-opacity-30">
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => handleDate(date)}
+              maxDate={new Date()}
+              peekNextMonth
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              dateFormat="dd/MM/yyyy"
+            />
+          </div>
+
+          <span className="text-white font-bold text-xl flex-start flex  pl-2">
+            Centro de preferencia
+          </span>
+          <select onChange={handleRegisterInputChange}
+            value={centro}
+            name="centro"
+            className="form-group text-white text-sm rounded m-2 bg-black bg-opacity-30">
+              {Array.isArray(centros.centros) && centros.centros.map(option => (
+          <option key={option._id} value={option._id}>
+            {option.name}
+          </option>
+        ))}</select>
         </div>
         <div className="h-full">
           <div className="flex flex-col  m-2 p-2 mb-4 rounded h-full">
-            <div className="form-group">
-                <span className="text-white font-bold flex-start flex  p-2">
-                    Vacuna que recibe el paciente
-                </span>
-                <select
-                    onChange={handleRegisterInputChange}
-                    value={vacuna_recibida}
-                    name="vacuna_recibida"
-                    className="form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30"
-                >
-                    <option value="" selected="true" disabled="true">Seleccioná una vacuna</option>
-                    <option value="COVID19">COVID 19</option>
-                    <option value="GRIPE">Gripe</option>
-                    <option value="FIEBRE AMARILLA">Fiebre amarilla</option>
-                </select>
-                </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <span className="text-white font-bold flex-start flex  p-2">
-                Cantidad de dosis recibidas contra el COVID19 (contando la vacuna recibida si corresponde)
+                Vacuna que recibe el paciente
+              </span>
+              <select
+                onChange={handleRegisterInputChange}
+                value={vacuna_recibida}
+                name="vacuna_recibida"
+                className="form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30"
+              >
+                <option value="" selected="true" disabled="true">
+                  Seleccioná una vacuna
+                </option>
+                <option value="COVID19">COVID 19</option>
+                <option value="GRIPE">Gripe</option>
+                <option value="FIEBRE AMARILLA">Fiebre amarilla</option>
+              </select>
+            </div> */}
+            {/* <div className="form-group">
+              <span className="text-white font-bold flex-start flex  p-2">
+                Cantidad de dosis recibidas contra el COVID19 (contando la
+                vacuna recibida si corresponde)
               </span>
               <select
                 onChange={handleRegisterInputChange}
@@ -320,15 +341,20 @@ checkGripe, checkFiebre } =
                 name="cant"
                 className="form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30"
               >
-                <option value="" selected="true" disabled="true">Seleccioná una cantidad</option>
-                <option value="0" disabled={vacuna_recibida == "COVID19" ? "true" : ""}>
+                <option value="" selected="true" disabled="true">
+                  Seleccioná una cantidad
+                </option>
+                <option
+                  value="0"
+                  disabled={vacuna_recibida == "COVID19" ? "true" : ""}
+                >
                   0
                 </option>
                 <option value="1">1</option>
                 <option value="2">2</option>
               </select>
-            </div>
-            <div className="form-group">
+            </div> */}
+            {/* <div className="form-group">
               <div>
                 <span className="text-white font-bold flex-start flex p-2">
                   Fecha de la última dosis recibida contra el COVID19
@@ -339,14 +365,21 @@ checkGripe, checkFiebre } =
                   name="fechaCovid"
                   value={fechaCovid}
                   autoComplete="off"
-                  className={"form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" + 
-                  (cant == 0 || vacuna_recibida == "COVID19" ? "bg-black bg-opacity-10" : "")}
-                  disabled={(cant == 0 ? true : false) || (vacuna_recibida == "COVID19" ? true : false)}
+                  className={
+                    "form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" +
+                    (cant == 0 || vacuna_recibida == "COVID19"
+                      ? "bg-black bg-opacity-10"
+                      : "")
+                  }
+                  disabled={
+                    (cant == 0 ? true : false) ||
+                    (vacuna_recibida == "COVID19" ? true : false)
+                  }
                 ></input>
               </div>
-            </div>
-            <div className="form-group">
-              {/* <span className="text-white font-bold flex-start flex p-2">
+            </div> */}
+            {/* <div className="form-group">
+              <span className="text-white font-bold flex-start flex p-2">
                 Indicá si recibió la vacuna contra la gripe
               </span>{" "}
               <select
@@ -354,17 +387,18 @@ checkGripe, checkFiebre } =
                 onChange={handleRegisterInputChange}
                 value={checkGripe}
                 name="checkGripe"
-                className={"form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" + 
-                (vacuna_recibida == "GRIPE" ? "bg-black bg-opacity-10" : "")}
+                className={
+                  "form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" +
+                  (vacuna_recibida == "GRIPE" ? "bg-black bg-opacity-10" : "")
+                }
               >
                 {" "}
                 <option value="false" selected="true">
                   No recibida
                 </option>
                 <option value="true">Recibida</option>
-              </select> */}
-              <div
-              >
+              </select>
+              <div>
                 <span className="text-white font-bold flex-start flex p-2">
                   Fecha de la última dosis recibida contra la gripe
                 </span>
@@ -375,13 +409,15 @@ checkGripe, checkFiebre } =
                   name="fechaGripe"
                   value={fechaGripe}
                   autoComplete="off"
-                  className={"form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" + 
-                (vacuna_recibida == "GRIPE" ? "bg-black bg-opacity-10" : "")}
+                  className={
+                    "form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" +
+                    (vacuna_recibida == "GRIPE" ? "bg-black bg-opacity-10" : "")
+                  }
                 ></input>
               </div>
-            </div>
-            <div className="form-group">
-              {/* <span className="text-white font-bold flex-start flex p-2">
+            </div> */}
+            {/* <div className="form-group">
+              <span className="text-white font-bold flex-start flex p-2">
                 Indicá si recibió la vacuna contra la fiebre amarilla
               </span>{" "}
               <select
@@ -389,32 +425,40 @@ checkGripe, checkFiebre } =
                 onChange={handleRegisterInputChange}
                 value={checkFiebre}
                 name="checkFiebre"
-                className={"form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" + 
-                (vacuna_recibida == "FIEBRE AMARILLA" ? "bg-black bg-opacity-10" : "")}
+                className={
+                  "form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" +
+                  (vacuna_recibida == "FIEBRE AMARILLA"
+                    ? "bg-black bg-opacity-10"
+                    : "")
+                }
               >
                 {" "}
                 <option value="false" selected="true">
                   No recibida
                 </option>
                 <option value="true">Recibida</option>
-              </select> */}
+              </select>
               <div>
                 <span className="text-white font-bold flex-start flex p-2">
                   Fecha de la última dosis recibida contra la fiebre amarilla
                 </span>
                 <input
-                    disabled={vacuna_recibida == "FIEBRE AMARILLA" ? "true" : ""}
+                  disabled={vacuna_recibida == "FIEBRE AMARILLA" ? "true" : ""}
                   onChange={handleRegisterInputChange}
                   type="date"
                   name="fechaFiebre"
                   value={fechaFiebre}
                   autoComplete="off"
-                  className={"form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" + 
-                (vacuna_recibida == "FIEBRE AMARILLA" ? "bg-black bg-opacity-10" : "")}
+                  className={
+                    "form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30" +
+                    (vacuna_recibida == "FIEBRE AMARILLA"
+                      ? "bg-black bg-opacity-10"
+                      : "")
+                  }
                 ></input>
               </div>
-            </div>
-            <div className="form-group">
+            </div> */}
+            {/* <div className="form-group">
               <span className="text-white font-bold flex-start flex p-2">
                 ¿Tiene factores preexistentes que lo convierten en un paciente
                 de riesgo?
@@ -425,24 +469,27 @@ checkGripe, checkFiebre } =
                 name="risk"
                 className="form-select form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30"
               >
-                <option value="" selected="true" disabled="true">Seleccioná una opción</option>
+                <option value="" selected="true" disabled="true">
+                  Seleccioná una opción
+                </option>
                 <option value="true" selected="true">
                   Sí
                 </option>
                 <option value="false">No</option>
               </select>
-            </div>
+            </div> */}
+
             <hr className="m-4" />
 
             <div className="flex">
-              {/*<div className='w-1/2 p-4 pl-0'>
-              <button
-                type='reset'
-                className='text-white w-full rounded h-8 font-bold boton-activo'
-              >
-                <Link to='/home'>Cancelar</Link>
-              </button> 
-            </div>*/}
+              <div className="w-1/2 p-4 pl-0">
+                <button
+                  type="reset"
+                  className="text-white w-full rounded h-8 font-bold boton-activo"
+                >
+                  <Link to="/home">Cancelar</Link>
+                </button>
+              </div>
               <div className="w-1/2 p-4 pr-0">
                 <Link to="/home">
                   <button

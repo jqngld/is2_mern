@@ -13,11 +13,14 @@ import Modal from 'react-modal'
 import { modalStyles } from '../../utils/modalStyles'
 import Card from '../../utils/card'
 import axios from 'axios'
+import { $CombinedState } from 'redux'
 
 function EditPerfil() {
   let store = useStore().getState()
   let id = store.auth.uid
 
+  const [centros, setCentros] = useState([])
+  let centrosTest = []
   const [input, setInput] = useState({
     nombre: '',
     apellido: '',
@@ -39,131 +42,160 @@ function EditPerfil() {
     })
   }
 
-  function handleClick(event) {
-    event.preventDefault()
-
-    let id = store.auth.uid
-
-    if(input.email != undefined) {
-      if (!validateEmail(input.email) && input.email != undefined) {
-        return Swal.fire('Error', 'El formato del email no es válido.', 'error')
-      }
-    }
-    
-    if(input.pass != undefined) {
-    if (input.pass.length != 0 && input.pass.length < 6) {
-      return Swal.fire('Error', 'La contraseña debe tener un mínimo de 6 carácteres', 'error')
-    }
-  }
-
-    const userTemp = {
-      dni: id,
-      centro: input.centro
-    }
-
-    if (input.pass != undefined) {
-      userTemp.password = input.pass
-    }
-    if (input.email != undefined) {
-      userTemp.email = input.email
-    }
-
-    axios.post(
-        'http://localhost:4000/api/auth/editperfil/' + id,
-        userTemp
-      )
-
-    Swal.fire('', 'Se actualizó tu información personal', 'success')
-    .then(function() { window.location.href = `${process.env.REACT_APP_URL}home` })
-}
-
-  function validateEmail(email) 
-  {
-    if(email.length != undefined) {
-      var re = /\S+@\S+\.\S+/;
-      return re.test(email);
-    } else return true
-  }
-
   useEffect(() => {
     axios.get('http://localhost:4000/api/user/' + id).then((res) => {
-      console.log(res.data)
-      setInput([res.data])
-    })
+      setInput(res.data)
+    }).then(axios.get('http://localhost:4000/api/centros/getallcentros').then((res) => {
+      setCentros(res.data)
+    }))
   }, [])
+
+  const cambiarEmail = async () => {
+
+    const { value: email } = await Swal.fire({
+      title: 'Ingresá un e-mail',
+      input: 'text',
+      inputLabel: 'Tu e-mail',
+      inputPlaceholder: 'Ingresá tu e-mail'
+    })
+
+    const correoNuevo = {
+      email: email
+    }
+    
+      if (email) {
+          axios.post('http://localhost:4000/api/user/modificarmail/' + id,
+          correoNuevo).then(function (response) {
+            Swal.fire('', 'Se actualizó tu información personal', 'success').then(function() {
+              window.location.reload()
+          })
+          })
+        .catch(function (err) {
+            Swal.fire('Error', err.response.data.msg, 'error')
+        })
+      }
+  }
+
+  const cambiarCentro = async () => {
+    
+    let options = []
+    console.log('Hola', centros)
+    centros.centros.forEach(element => {
+      options[element._id] = element.name
+    });
+    console.log(options)
+
+    const { value: centro } = await Swal.fire({
+      title: 'Seleccioná un centro',
+      input: 'select',
+      inputOptions: options,
+      showCancelButton: true,
+    })
+
+    const centroNuevo = {
+      centro: centro
+    }
+    
+      if (centro) {
+          axios.post('http://localhost:4000/api/user/modificarcentro/' + id,
+          centroNuevo).then(function (response) {
+            Swal.fire('', 'Se actualizó tu información personal', 'success').then(function() {
+              window.location.reload()
+          })
+          })
+        .catch(function (err) {
+            Swal.fire('Error', err.response.data.msg, 'error')
+        })
+      }
+  }
+
+  const cambiarPassword = async () => {
+
+    const { value: password } = await Swal.fire({
+      title: 'Ingresá tu contraseña nueva',
+      input: 'password',
+      inputLabel: 'Password',
+      autocapitalize: 'off',
+    })
+    const passNueva = {
+      password: password
+    }
+    
+       if (password) {
+           axios.post('http://localhost:4000/api/user/modificarcontrasena/' + id,
+           passNueva).then(function (response) {
+             Swal.fire('', 'Se actualizó tu información personal', 'success').then(function() {
+               window.location.reload()
+           })
+           })
+         .catch(function (err) {
+             Swal.fire('Error', err.response.data.msg, 'error')
+         })
+       }
+  }
 
   return (
     <div className='flex flex-col  m-2 p-2  mb-4 rounded h-full'>
-        <div className='text-white font-bold text-6xl flex-start flex p-4'>
+      <div className='text-white font-bold text-6xl flex-start flex p-4'>
         Modificar perfil{' '}
       </div>
       <hr className='m-4' />
-      <div className='w-full '>
-              <span className='text-white font-bold text-2xl flex-start flex  p-2 '>
-                Centro de preferencia
-              </span>
-              <select
-                onChange={handleChange}
-                value={input.centro}
-                name='centro'
-                className='form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30'
-              >
-                <option value='Centro Cementerio' selected='true'>Centro Zona Cementerio</option>
-                <option value='Centro Municipalidad'>Centro Zona Municipalidad</option>
-                <option value='Centro Terminal'>Centro Zona Terminal</option>
-              </select>
-            </div>
-          <hr className='m-4' />
-          <div className='form-group'>
-            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              E-mail
-            </span>
-            <input
-              onChange={handleChange}
-              type='text'
-              name='email'
-              placeholder='Dejar vacío si no se desea actualizar'
-              value={input.email}
-              autoComplete='off'
-              className='form-control text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
-            ></input>
-          </div>
-          <hr className='m-4' />
-          <div className='form-group'>
-            <span className='text-white font-bold text-2xl flex-start flex  p-2'>
-              Contraseña
-            </span>
-            <input
-              onChange={handleChange}
-              type='password'
-              name='pass'
-              placeholder='Dejar vacío si no se desea actualizar'
-              value={input.pass}
-              autoComplete='off'
-              className='form-control text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
-            ></input>
-          </div>
-          <div className='flex'>
-            <div className='w-1/2 p-4 pl-0'>
-            <Link to='/home'><button
-                type='reset'
-                className='text-white w-full rounded h-8 font-bold boton-activo'
-              >
-                Cancelar
-              </button></Link>
-            </div>
-            <div className='w-1/2 p-4 pr-0'>
+      <div className='w-full'>
+        <span className='text-white font-bold text-2xl flex-start flex  p-2 '>
+          Centro de preferencia
+        </span>
+        <input
+          type='text'
+          name='centro'
+          value={input.centro}
+          className='form-control text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
+          readOnly='true'></input>
+          <button onClick={cambiarCentro} className='text-white w-full rounded h-8 font-bold boton-activo'>
+            Cambiar mi centro de preferencia
+          </button> 
+      </div>
+      <hr className='m-4' />
+      <div className='form-group'>
+        <span className='text-white font-bold text-2xl flex-start flex  p-2'>
+          E-mail
+        </span>
+        <input
+          onChange={handleChange}
+          type='text'
+          name='email'
+          placeholder='Dejar vacío si no se desea actualizar'
+          value={input.email}
+          autoComplete='off'
+          className='form-control text-sm text-white w-full py-5 px-4 h-2 rounded m-2 bg-black bg-opacity-30'
+          readOnly='true'>
+        </input>
+        <button onClick={cambiarEmail} className='text-white w-full rounded h-8 font-bold boton-activo'>
+          Cambiar mi e-mail
+        </button>
+      </div>
+      <hr className='m-4' />
+      <div className='form-group'>
+        <span className='text-white font-bold text-2xl flex-start flex  p-2'>
+          Contraseña
+        </span>
+        <button onClick={cambiarPassword} className='text-white w-full rounded h-8 font-bold boton-activo'>Cambiar contraseña</button>  <hr className='m-4' />
+      </div>
+      <div className='flex'>
+        <div className='w-1/2 p-4 pl-0'>
+          <div className='w-full p-4 pl-0'>
+            <Link to='/home'>
               <button
-                onClick={handleClick}
-                className='text-white w-full rounded h-8 font-bold boton-activo'
-              >
-                Guardar
+                type='reset'
+                className='text-white w-full rounded h-8 font-bold boton-activo'>
+                  Volver
               </button>
-            </div>
+            </Link>
           </div>
         </div>
-    //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>
+      </div>
+    </div>
   )
 }
+
 
 export default EditPerfil

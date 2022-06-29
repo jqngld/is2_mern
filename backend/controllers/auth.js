@@ -1,6 +1,7 @@
 const { response } = require('express')
 const bcrypt = require('bcryptjs')
 const Usuario = require('../models/Usuario')
+const Centro = require('../models/Centro')
 const { generarJWT } = require('../helpers/jwt')
 const { isObjectIdOrHexString } = require('mongoose')
 const { ObjectId } = require('mongodb');
@@ -60,6 +61,10 @@ const crearUsuario = async (req, res = response) => {
 
     let edad = getAge(date)
 
+    console.log(req.body.centro)
+    let centroFetch = await Centro.findOne({name: req.body.centro})
+    console.log('Es: ', centroFetch.name)
+
     const usernuevo = new Usuario({
       email: req.body.email,
       name: req.body.name,
@@ -70,16 +75,14 @@ const crearUsuario = async (req, res = response) => {
       age: edad,
       riesgo: getRiesgo(edad),
       turnos: [],
-      centro: req.body.centro,
+      centro: ObjectId(centroFetch._id),
       historiaClinica: null,
-      is_vacunador: false
+      is_vacunador: false,
+      is_admin: false
     })
 
     if (req.body.dni == '21773881') {
       usernuevo.is_vacunador = true
-    }
-    if(req.body.centro != '') {
-      usernuevo.centro = centro
     }
 
     // Encriptar contraseña

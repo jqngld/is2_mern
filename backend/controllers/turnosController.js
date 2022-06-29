@@ -14,22 +14,25 @@ const Turno = require('../models/Turno')
 // const Excercise = require('../models/Excercise')
 // 6290b8402512d72f3e50e4f6
 
-const getAllTurnos = async (req, res = response) => {
+const getAllTurnosFromFecha = async (req, res = response) => {
 
   let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   var fecha = req.url.split('/')[2]
+  let user = await Usuario.findById(ObjectId(req.url.split('/')[3]))
   let fechaQuery = fecha.replaceAll('-', '/')
   let fechx = fecha.split('-')
   let stringQuery = fechx[0] + "/" + fechx[1] + "/" + fechx[2]
-  console.log('res: ', stringQuery)
-  let turnitos = await Turno.find()
-
+  console.log('res: ', user.centro)
+  console.log('res2: ', user.centro.toString())
+  console.log('res3: ', ObjectId(user.centro.toString()))
+  let turnosPendientes = await Turno.find({estado: 'Pendiente', centro: user.centro.toString()})
+  console.log(turnosPendientes)
   let turnosReturn = []
   
-  for (var i = 0; i < turnitos.length; i++) {
-    console.log('turnito: ', turnitos[i].vax, '!', turnitos[i].date.toLocaleString('es-AR').split(' ')[0]);
-    if (stringQuery === turnitos[i].date.toLocaleString('es-AR').split(' ')[0]) {
-      turnosReturn.push(turnitos[i])
+  for (var i = 0; i < turnosPendientes.length; i++) {
+    console.log('turnito: ', turnosPendientes[i].vax, '!', turnosPendientes[i].date.toLocaleString('es-AR').split(' ')[0]);
+    if (stringQuery === turnosPendientes[i].date.toLocaleString('es-AR').split(' ')[0]) {
+      turnosReturn.push(turnosPendientes[i])
     }
   }
 
@@ -43,16 +46,29 @@ const getAllTurnos = async (req, res = response) => {
 
 const modificarEstado = async (req, res = response) => {
 
-  let id = req.url.split('/')[2]
+  console.log('hola?')
+  const filter = { _id: req.url.split('/')[2]}
+  const update = { estado: req.body.estado, observacion: req.body.obs }
 
-  Turno.findByIdAndRemove(id, function (err, docs) {
-    if (err){
-        console.log(err)
+  let turnoTarget = await Turno.findOne(filter)
+  console.log('a', turnoTarget.vax)
+
+  let paciente = await Usuario.findOne({email: turnoTarget.paciente})
+  let filterHistoria = { _id: paciente.historiaClinica }
+
+  if ( req.body.estado === "Presente") {
+    if (turnoTarget.vax === "COVID19") {
+      await HistoriaClinica.findOneAndUpdate(filterHistoria, { $inc: {'cantidadDosisCovid': 1}, $set: {'ultimaDosisCovid': new Date()}})
     }
-    else{
-        console.log("Removed User : ", docs);
+    if (turnoTarget.vax === "GRIPE") {
+      await HistoriaClinica.findOneAndUpdate(filterHistoria, { $set: {'ultimaDosisGripe': new Date()}})
     }
-})
+    if (turnoTarget.vax === "FIEBRE AMARILLA") {
+      await HistoriaClinica.findOneAndUpdate(filterHistoria, { $set: {'ultimaDosisFiebre': new Date()}})
+    }
+  }
+
+  await Turno.findOneAndUpdate(filter, update)  
 
   res.json({  
     ok: true
@@ -60,10 +76,21 @@ const modificarEstado = async (req, res = response) => {
 
 }
 
+const getTurnosPendientes = async (req, res = response) => {
+
+  let turnosTarget = await Turno.find({estado: 'Pendiente'})
+
+  res.status(201).json({
+    ok: true,
+    turno: turnosTarget
+  })
+
+
+}
+
 const getTurnos = async (req, res = response) => {
   var user = req.url.split('/')[1]
   console.log('hola ?? wtf ', user)
-  if (user = "turnosfecha") { return }
 
   // let info = await Usuario.findById(ObjectId(user)).exec()
   let info2 = await Usuario.findOne({ _id: user })
@@ -100,7 +127,8 @@ const nuevoGripe = async (req, res = response) => {
       date: '', //randomDate(Date.now(), (Date.now()+(90*24*60*60*1000))),
       vax: "GRIPE",
       dateString: '',//date.toLocaleString('es-AR', options),
-      paciente: dni2.email
+      paciente: dni2.email,
+      centro: ObjectId(dni2.centro)
     })
 
     let historia = HistoriaClinica.findById(ObjectId(dni2.historiaClinica))
@@ -200,7 +228,8 @@ const nuevoFiebre = async (req, res = response) => {
           vax: 'FIEBRE AMARILLA',
           dateString: 'Su turno está pendiente y debe ser gestionado por un administrador',
           estado: 'PENDIENTE',
-          paciente: dni2.email
+          paciente: dni2.email,
+          centro: ObjectId(dni2.centro)
         })
 
         await nuevoTurno.save()
@@ -271,6 +300,7 @@ module.exports = {
   getTurnos,
   nuevoFiebre,
   nuevoGripe,
-  getAllTurnos,
-  modificarEstado
+  getAllTurnosFromFecha,
+  modificarEstado,
+  getTurnosPendientes
 }

@@ -1,3 +1,4 @@
+
 import { React, useState, useEffect } from 'react'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
@@ -92,7 +93,8 @@ function CreateHistoria() {
               name='cant'
               className='form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30'
             >
-              <option value='0' selected='true'>0</option>
+              <option value="" selected="true" disabled="true">Seleccioná una opción</option>
+              <option value='0'>0</option>
               <option value='1'>1</option>
               <option value='2'>2</option>
             </select>
@@ -123,7 +125,9 @@ function CreateHistoria() {
               value={input.checkGripe}
               name='checkGripe'
               className='form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30'
-            > <option value='false' selected='true'>No recibida</option>
+            
+            > <option value="" selected="true" disabled="true">Seleccioná una opción</option>
+              <option value='false'>No recibida</option>
               <option value='true'>
                 Recibida
               </option>
@@ -152,8 +156,10 @@ function CreateHistoria() {
               value={input.checkFiebre}
               name='checkFiebre'
               className='form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30'
-            > <option value='false' selected='true'>No recibida</option>
-              <option value='true'>
+            
+            > <option value="" selected="true" disabled="true">Seleccioná una opción</option>
+            <option value='false'>No recibida</option>
+            <option value='true'>
                 Recibida
               </option>
               
@@ -183,6 +189,7 @@ function CreateHistoria() {
               name='risk'
               className='form-select form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30'
             >
+              <option value="" selected="true" disabled="true">Seleccioná una opción</option>
               <option value='true' selected='true'>
                 Sí
               </option>

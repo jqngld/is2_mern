@@ -7,6 +7,7 @@ import { loadInfo } from '../../actions/info'
 import { loadGeneral } from '../../actions/general'
 import Sidebar from '../ui/Sidebar'
 import Sidebar22 from '../ui/SidebarVac'
+import Sidebar33 from '../ui/SidebarAdm'
 import '../../App.css'
 
 export const Dashboard = () => {
@@ -34,7 +35,8 @@ export const Dashboard = () => {
 
   return (
     <div className='rowC'> 
-    <> { perfil.is_vacunador ? <Sidebar22/> : <Sidebar/>} </>
+    {console.log('asd', perfil.is_admin)}
+    <> { perfil.is_vacunador ? <Sidebar22/> : perfil.is_admin ? <Sidebar33/> : <Sidebar/>} </>
         <div className='w-full center'><Link to='/home' aria-label='Workout logo'><h1 className=''>
           <img
             style={{ width: ' 250px' }}

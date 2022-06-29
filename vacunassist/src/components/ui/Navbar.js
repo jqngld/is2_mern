@@ -21,12 +21,12 @@ export const Navbar = () => {
 
   const [perfil, setPerfil] = useState({})
 
-  useEffect(() => {
-    axios.get('http://localhost:4000/api/user/' + id).then((res) => {
-      console.log(res.data)
-      setPerfil(res.data)
-    })
-  }, [])
+  // useEffect(() => {
+  //   axios.get('http://localhost:4000/api/user/' + id).then((res) => {
+  //     console.log(res.data)
+  //     setPerfil(res.data)
+  //   })
+  // }, [])
 
   const handleLogout = () => {
     dispatch(startLogout())
@@ -34,7 +34,7 @@ export const Navbar = () => {
 
   return (
     <div onClick={toggle} className='absolute flex items-center right-4'>
-      <span onClick={toggle} className='navbar-brand text-white p-8'>
+      {/* <span onClick={toggle} className='navbar-brand text-white p-8'>
         {perfil.is_vacunador ? 'Vacunador: ' : 'Paciente: '}
       </span>
       <span
@@ -42,7 +42,7 @@ export const Navbar = () => {
         className='navbar-brand text-white p-8 whitespace-nowrap'
       >
          {name}
-      </span>
+      </span> */}
 
       <button
         className='text-white w-full rounded h-8 font-bold boton-danger'
@@ -51,14 +51,14 @@ export const Navbar = () => {
         <i className='fas fa-sign-out-alt'></i>
         <span className='m-2 p-2'> Salir</span>
       </button>
-      <div className='relative'>
+      {/* <div className='relative'>
         <Dropdown2
           rol={perfil.is_vacunador}
           usuario={name}
           isOpen={isOpen}
           toggle={toggle}
         />
-      </div>
+      </div> */}
     </div>
   )
 }

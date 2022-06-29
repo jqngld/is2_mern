@@ -30,23 +30,68 @@ function AusentePresente( turno ) {
     return false
   }
 
-  async function handleClick() {
+  const handleClickPresente = async () => {
+    const { value: observacion } = await Swal.fire({
+      title: 'Ingresá una observación',
+      input: 'text',
+      inputLabel: 'Observación',
+      showCancelButton: true,
+    })
 
-    console.log(turno.turno._id)
+    const estadoNuevo = {
+      estado: "Presente",
+      obs: observacion
+    }
+    
+    if(observacion) {
 
-    axios.post(
-        "http://localhost:4000/api/turno/modificarestado/" + turno.turno._id
+      axios.post(
+        "http://localhost:4000/api/turno/modificarestado/" + turno.turno._id, estadoNuevo
     ).then(function (response) {
         console.log(response)
         Swal.fire('Éxito', 'Modificaste el estado del turno con éxito', 'success')
             .then(function() {
                 window.location.reload()
-            })
+          })
       })
     .catch(function (err) {
         Swal.fire('Error', 'Hubo un error', 'error')
     })
 
+
+    }
+  }
+
+  const handleClickAusente = async () => {
+    const { value: observacion } = await Swal.fire({
+      title: 'Ingresá una observación',
+      input: 'text',
+      inputLabel: 'Observación',
+      showCancelButton: true,
+    })
+
+    const estadoNuevo = {
+      estado: "Ausente",
+      obs: observacion
+    }
+
+    if(observacion) {
+
+      axios.post(
+        "http://localhost:4000/api/turno/modificarestado/" + turno.turno._id, estadoNuevo
+    ).then(function (response) {
+        console.log(response)
+        Swal.fire('Éxito', 'Modificaste el estado del turno con éxito', 'success')
+            .then(function() {
+                window.location.reload()
+          })
+      })
+    .catch(function (err) {
+        Swal.fire('Error', 'Hubo un error', 'error')
+    })
+
+
+    }
   }
 
 
@@ -54,7 +99,7 @@ function AusentePresente( turno ) {
     <div className=''>
       <button
         style={{ width: 100 }}
-        onClick={handleClick}
+        onClick={handleClickPresente}
         disabled={checkFecha() ? "true" : ""}
         className={'text-white rounded text-sm font-bold '
         + (checkFecha() ? 'boton-inactivo' : 'boton-activo')}
@@ -63,7 +108,7 @@ function AusentePresente( turno ) {
       </button>
       <button
         style={{ width: 100 }}
-        onClick={handleClick}
+        onClick={handleClickAusente}
         disabled={checkFecha() ? "true" : ""}
         className={'text-white rounded text-sm font-bold '
         + (checkFecha() ? 'boton-inactivo' : 'boton-activo')}

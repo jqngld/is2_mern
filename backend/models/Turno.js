@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const ObjectId = require('mongoose/lib/schema/objectid')
 const Usuario = require('./Usuario')
 
 const turnoSchema = new mongoose.Schema({
@@ -18,6 +19,16 @@ const turnoSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  estado: {
+    type: String
+  },
+  observacion: {
+    type: String
+  },
+  centro: {
+    type: ObjectId,
+    ref: 'Centro'
+  }
 })
 
 module.exports = mongoose.model('Turno', turnoSchema)

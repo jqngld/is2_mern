@@ -16,6 +16,8 @@ import EditPerfil from '../components/account/EditPerfil'
 import Dashboard from '../components/addnew/Dashboard'
 import { Alumno } from '../components/addnew/Alumno'
 
+import ReporteVacunas from '../components/ui/GestionarTurno'
+
 import { Navbar } from '../components/ui/Navbar'
 import { Sidebar } from '../components/ui/Sidebar'
 import { Login } from '../components/auth/Login'
@@ -25,8 +27,10 @@ import { Alumnos } from '../components/Alumnos'
 import { Cuenta } from '../components/Cuenta'
 import { FormRutine } from '../components/addnew/FormRutine'
 
+import VerHistClinica from '../components/account/InfoClinica'
 import { VerTurnosVac } from '../components/account/VerTurnosVacunador'
 import CreateUsuarioTurno from '../components/addnew/CreateUsuarioTurno'
+import VacunarExpress from '../components/addnew/VacunacionExpress'
 
 export const AppRouter = (history) => {
   const dispatch = useDispatch()
@@ -124,6 +128,22 @@ export const AppRouter = (history) => {
             history={history}
           />
 
+           <PrivateRoute
+            exact
+            path='/reportevacunas'
+            component={ReporteVacunas}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+<PrivateRoute
+            exact
+            path='/vacunacionexpress'
+            component={VacunarExpress}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
           <PrivateRoute
             exact
             path='/home'
@@ -192,6 +212,14 @@ export const AppRouter = (history) => {
             exact
             path='/verturnosvacunador'
             component={VerTurnosVac}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+<PrivateRoute
+            exact
+            path='/infoclinica'
+            component={VerHistClinica}
             isAuthenticated={!!uid}
             history={history}
           />

@@ -3,7 +3,7 @@ const { check } = require('express-validator')
 const { validarCampos } = require('../middlewares/validar-campos')
 const { validarJWT } = require('../middlewares/validar-jwt')
 const Turno = require('../models/Turno')
-const { getTurnos, nuevoFiebre, nuevoGripe, getAllTurnos, modificarEstado } = require('../controllers/turnosController')
+const { getTurnos, getTurnosPendientes, nuevoFiebre, nuevoGripe, getAllTurnosFromFecha, modificarEstado } = require('../controllers/turnosController')
 
 const router = Router()
 
@@ -13,9 +13,11 @@ router.get(
   )
 
   router.get(
-    '/turnosfecha/:fecha',
-    getAllTurnos,
+    '/turnosfecha/:fecha/:id',
+    getAllTurnosFromFecha,
   )
+
+  router.post('/turnospendientes', getTurnosPendientes)
 
 router.post(
     '/nuevoturnofiebre',

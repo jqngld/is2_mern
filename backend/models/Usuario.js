@@ -27,7 +27,8 @@ const Usuario = new mongoose.Schema({
     unique: true,
   },
   centro: {
-    type: String,
+    type: ObjectId,
+    ref: 'Centro',
     require: true
   },
   tel: {

@@ -27,6 +27,7 @@ app.use('/api/user', require('./routes/user'))
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/historiaclinica', require('./routes/historiaclinica'))
 app.use('/api/turno', require('./routes/turnos'))
+app.use('/api/centros', require('./routes/centro'))
 
 // port
 const port = process.env.PORT
