@@ -61,7 +61,7 @@ function Sidebar33() {
                     <path d='M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1' />
                   </svg>
                   <Link
-                    to='/reportevacunas'
+                    to='/gestionarturnos'
                     className='font-bold text-white hover:text-gray-200'
                   >
                     <span className='text-xs  ml-2 whitespace-nowrap'>
@@ -88,17 +88,14 @@ function Sidebar33() {
                     <path d='M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1' />
                   </svg>
                   <Link
-                    to='/reportepacientes'
+                    to='/reportevacunas'
                     className='font-bold text-white hover:text-gray-200'
                   >
                     <span className='text-xs  ml-2 whitespace-nowrap'>
-                      Obtener reporte de pacientes
+                      Obtener reporte de vacunas
                     </span>
                   </Link>
                 </div>
-                {/* <div className='py-1 px-3 bg-gray-700 rounded text-gray-500 flex items-center justify-center text-xs'>
-                  8
-                </div> */}
               </li>
               <li className='flex w-full justify-between text-gray-600 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 hover:text-gray-500 cursor-pointer items-center mb-6'>
                 <div className='flex items-center text-white'>
@@ -118,11 +115,38 @@ function Sidebar33() {
                     <path d='M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1' />
                   </svg>
                   <Link
-                    to='/vacunacionexpress'
+                    to='/reporteregistrados'
                     className='font-bold text-white hover:text-gray-200'
                   >
                     <span className='text-xs  ml-2 whitespace-nowrap'>
-                      Vacunación express
+                      Obtener reporte de pacientes
+                    </span>
+                  </Link>
+                </div>
+              </li>
+              <li className='flex w-full justify-between text-gray-600 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110 hover:text-gray-500 cursor-pointer items-center mb-6'>
+                <div className='flex items-center text-white'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='icon icon-tabler icon-tabler-puzzle'
+                    width={18}
+                    height={18}
+                    viewBox='0 0 24 24'
+                    strokeWidth='1.5'
+                    stroke='currentColor'
+                    fill='none'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  >
+                    <path stroke='none' d='M0 0h24v24H0z' />
+                    <path d='M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1' />
+                  </svg>
+                  <Link
+                    to='/modificarcentro'
+                    className='font-bold text-white hover:text-gray-200'
+                  >
+                    <span className='text-xs  ml-2 whitespace-nowrap'>
+                      Modificar nombre de vacunatorio
                     </span>
                   </Link>
                 </div>

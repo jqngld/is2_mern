@@ -28,7 +28,9 @@ function VacunarExpress() {
     dni: 'No hay información.',
     email: 'No hay información.'
   });
+  const [botonAble, setBoton] = useState(true)
   const [historia, setHistoria] = useState();
+  const [botonStyle, setBotonStyle] = useState('text-white w-full text-sm rounded h-8 font-bold boton-inactivo')
 
   const fetchPaciente = (e) => {
     e.preventDefault()
@@ -41,6 +43,8 @@ function VacunarExpress() {
     .then((res) => {
       setPaciente(res.data.paciente)
       setHistoria(res.data.historia)
+      setBoton("")
+      setBotonStyle('text-white w-full text-sm rounded h-8 font-bold boton-activo')
     }).catch(function (err) {
       Swal.fire('Error', err.response.data.msg, 'error')
       setPaciente({
@@ -49,6 +53,8 @@ function VacunarExpress() {
         dni: 'No hay información.',
         email: 'No hay información.'
       })
+      setBoton(true)
+      setBotonStyle(('text-white w-full text-sm rounded h-8 font-bold boton-inactivo'))
   })
 
   }
@@ -101,7 +107,8 @@ function VacunarExpress() {
         </div>
         <div>
         <button
-        className={'text-white w-full text-sm rounded h-8 font-bold boton-activo'}
+        className={botonStyle}
+        disabled={botonAble}
         onClick={() => {
           const send = {
             paciente: paciente,
@@ -120,7 +127,8 @@ function VacunarExpress() {
           Vacunar COVID-19
         </button>
         <button
-        className={'text-white w-full text-sm rounded h-8 font-bold boton-activo'}
+        className={botonStyle}
+        disabled={botonAble}
         onClick={() => {
           const send = {
             paciente: paciente,
@@ -128,7 +136,9 @@ function VacunarExpress() {
           }
 
           axios.post('http://localhost:4000/api/user/vacunar/GRIPE', send).then(function (response) {
-            Swal.fire('', 'Registraste la vacunación del paciente con éxito', 'success')
+            Swal.fire('', 'Registraste la vacunación del paciente con éxito', 'success').then(function() {
+              window.location.reload()
+          })
           })
         .catch(function (err) {
             Swal.fire('Error', err.response.data.msg, 'error')
@@ -137,7 +147,8 @@ function VacunarExpress() {
           Vacunar GRIPE
         </button>
         <button
-        className={'text-white w-full text-sm rounded h-8 font-bold boton-activo'}
+        className={botonStyle}
+        disabled={botonAble}
         onClick={() => {
           const send = {
             paciente: paciente,

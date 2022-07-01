@@ -11,12 +11,15 @@ import { Addnew } from '../components/addnew/Addnew'
 import CreateHistoria from '../components/addnew/CreateHistoria'
 import Turnos from '../components/account/Turnos'
 import MisTurnos from '../components/account/MisTurnos'
+import HistorialVacunas from '../components/account/VerHistorialUsuario'
 import InfoPersonal from '../components/account/InfoPersonal'
 import EditPerfil from '../components/account/EditPerfil'
 import Dashboard from '../components/addnew/Dashboard'
 import { Alumno } from '../components/addnew/Alumno'
 
-import ReporteVacunas from '../components/ui/GestionarTurno'
+import ReporteVacunas from '../components/ui/ReporteVacunas'
+import GestionarTurno from '../components/ui/GestionarTurno'
+import ModificarCentro from '../components/ui/ModificarCentro'
 
 import { Navbar } from '../components/ui/Navbar'
 import { Sidebar } from '../components/ui/Sidebar'
@@ -31,6 +34,7 @@ import VerHistClinica from '../components/account/InfoClinica'
 import { VerTurnosVac } from '../components/account/VerTurnosVacunador'
 import CreateUsuarioTurno from '../components/addnew/CreateUsuarioTurno'
 import VacunarExpress from '../components/addnew/VacunacionExpress'
+import ReporteRegistrados from '../components/ui/ReporteRegistrados'
 
 export const AppRouter = (history) => {
   const dispatch = useDispatch()
@@ -122,6 +126,14 @@ export const AppRouter = (history) => {
 
           <PrivateRoute
             exact
+            path='/historialvacunas'
+            component={HistorialVacunas}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
             path='/infoperfil'
             component={InfoPersonal}
             isAuthenticated={!!uid}
@@ -130,8 +142,32 @@ export const AppRouter = (history) => {
 
            <PrivateRoute
             exact
+            path='/gestionarturnos'
+            component={GestionarTurno}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
             path='/reportevacunas'
             component={ReporteVacunas}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
+            path='/modificarcentro'
+            component={ModificarCentro}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
+            path='/reporteregistrados'
+            component={ReporteRegistrados}
             isAuthenticated={!!uid}
             history={history}
           />

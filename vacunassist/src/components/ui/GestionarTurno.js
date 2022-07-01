@@ -7,7 +7,7 @@ import Card from '../../utils/card'
 import axios from 'axios'
 import Sidebar33 from './SidebarAdm'
 
-export const ReporteVacunas = () => {
+export const GestionarTurno = () => {
     const dispatch = useDispatch()
     let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
@@ -16,13 +16,32 @@ export const ReporteVacunas = () => {
   
     const [perfil, setPerfil] = useState({})
     const [turnos, setTurnos] = useState({})
-    const [startDate, setStartDate] = useState(new Date())
+    const [startDate, setStartDate] = useState(new Date());
+    const [dateOpen, setDateOpen] = useState(false);
 
-    function handleChange(event) {
-      console.log('hola')
-      setStartDate(event)
-      console.log(startDate)
-    }
+    const openDatePicker = () => {
+      setDateOpen(!dateOpen);
+    };
+
+    const handleDate = (date, turno) => {
+      setStartDate(date)
+      const asdasd = {
+        fecha: date
+      }
+      axios.post("http://localhost:4000/api/turno/gestionarturno/" + turno._id, asdasd).then(function (response) {
+        Swal.fire('', response.data.msg, 'success').then(function() {
+          window.location.reload()
+      })
+      })
+    .catch(function (err) {
+        Swal.fire('Error', err.response.data.msg, 'error')
+    })
+      // .then(function (response) {
+      //                      Swal.fire('', 'Fecha yasss', 'success').then(function() {
+      //                        window.location.reload()
+      //                    })
+      //                   })
+    };
   
     useEffect(() => {
       setStartDate(new Date())
@@ -41,11 +60,11 @@ export const ReporteVacunas = () => {
             <Sidebar33/>
             <div classname=''>
                 <div className='text-white font-bold text-4xl p-5 pb-4'>
-                    Próximos turnos
+                    Turnos esperando confirmación
                 </div>
                 {console.log(turnos)}
                 <div className='text-white text-left font-bold text-2xl flex-col p-4'>
-                Turnos pendientes {turnos.turno !=0 ? (
+                {turnos.turno !=0 ? (
     <div className='text-white text-left font-bold text-2xl flex-col p-4'>
       {Array.isArray(turnos.turno) &&
         turnos.turno.map((turno, index) => (
@@ -55,23 +74,44 @@ export const ReporteVacunas = () => {
             </div>
             <h1>
               Email del paciente: {turno.paciente} <br></br>
-              <button onClick={() => {
-                Swal.fire({
-                    title: "Ingresá la fecha para el turno",
-                    html:'<input id="datetimepicker" type="date" class="form-control">',
-                    placeholder: "DD/MM/AAAA",
-                    onOpen: function() {
-                      <DatePicker
-                      onChange={(date) => handleChange(date)}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode='select'
-                      dateFormat='yyyy/MM/dd'
-                    />
-                    }
-                })
-              }} className="boton-activo rounded text-sm w-full">Asignar fecha</button>
+              <div className="form-group text-sm text-black p-4 w-full py-3 rounded m-2 bg-black bg-opacity-30">
+              <DatePicker
+                  selected={startDate}
+                  onChange={(date) => handleDate(date, turno)}
+                  maxDate={new Date()}
+                  dropdownMode="select"
+                  dateFormat="dd/MM/yyyy"
+                />   
+                      
+              </div>
+              {/* <button
+                onClick={async () => {
+                  <DatePicker
+                  selected={new Date()}
+                  onChange={(date) => handleDate(date, turno)}
+                  maxDate={new Date()}
+                  dropdownMode="select"
+                  dateFormat="dd/MM/yyyy"
+                /> 
+
+                      console.log('asd', fecha)
+
+                      const test = {
+                        fecha: fecha
+                      }
+                       if (fecha) {
+                         console.log('a', fecha)
+                         axios.post("http://localhost:4000/api/turno/gestionarturno/" + turno._id, test).then(function (response) {
+                           Swal.fire('', 'Fecha yasss', 'success').then(function() {
+                             window.location.reload()
+                         })
+                        })
+                       .catch(function (err) {
+                           Swal.fire('Error', err.response.data.msg, 'error')
+                       })
+                      }
+                    }}
+              className="boton-activo rounded text-sm w-full">Asignar fecha</button> */}
             </h1>
             <br></br>
           </div>
@@ -83,4 +123,4 @@ export const ReporteVacunas = () => {
     )
   }
   
-  export default ReporteVacunas
+  export default GestionarTurno

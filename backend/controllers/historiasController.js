@@ -120,7 +120,8 @@ const crearHistoria = async (req, res = response) => {
         vax: "COVID19",
         dateString: fechaza,
         paciente: dni2.email,
-        centro: ObjectId(dni2.centro)
+        centro: ObjectId(dni2.centro),
+        estado: "Pendiente"
       })
 
       dni2.turnos.push(nuevoTurno)
@@ -144,7 +145,8 @@ const crearHistoria = async (req, res = response) => {
           vax: "COVID19",
           dateString: fechaza,
           paciente: dni2.email,
-          centro: ObjectId(dni2.centro)
+          centro: ObjectId(dni2.centro),
+          estado: "Pendiente"
         })
 
         dni2.turnos.push(nuevoTurno)}
@@ -159,11 +161,12 @@ const crearHistoria = async (req, res = response) => {
       console.log('ENTREEEEEEEE')
 
       let nuevoTurno = new Turno({
-        date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
+        date: '',
         vax: "COVID19",
         dateString: "Su turno pronto será asignado por un administrador",
         paciente: dni2.email,
-        centro: ObjectId(dni2.centro)
+        centro: ObjectId(dni2.centro),
+        estado: 'Esperando confirmación'
       })
 
       dni2.turnos.push(nuevoTurno)
@@ -177,7 +180,8 @@ const crearHistoria = async (req, res = response) => {
           vax: "GRIPE",
           dateString: '',//date.toLocaleString('es-AR', options)
           paciente: dni2.email,
-          centro: ObjectId(dni2.centro)
+          centro: ObjectId(dni2.centro),
+          estado: "Pendiente"
         })
 
         var ahora = new Date()

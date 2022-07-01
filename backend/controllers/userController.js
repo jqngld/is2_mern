@@ -28,12 +28,12 @@ const getUserDNI = async (req, res = response) => {
   }
   console.log(pac.historiaClinica)
   let historia = await HistoriaClinica.findById(ObjectId(pac.historiaClinica))
-
+  
   try {
     res.status(201).json({
       ok: true,
-      paciente: pac,
-      historia: historia
+      pacientes: [pac],
+      historia: historia,
     }) 
   } catch (error) {
       console.log(error)
@@ -135,8 +135,9 @@ const getHistoria = async (req, res = response) => {
 
   var user = req.url.split('/')[2]
   let info2 = await Usuario.findOne({ _id: user })
+  console.log(user)
   let historia = await HistoriaClinica.findById(ObjectId(info2.historiaClinica))
-  console.log(info2.name, info2.historiaClinica, historia.id)
+  console.log(info2.name, info2.historiaClinica, historia._id)
 
   res.json({
     risk: info2.risk,
@@ -311,13 +312,22 @@ const vacunarPaciente = async (req, res = response) => {
   }
 
   if (vax === "GRIPE") {
-    await HistoriaClinica.findOneAndUpdate(
-      {_id: historia._id}, { $set: {'ultimaDosisGripe': new Date()}}
-    )
-    await Usuario.findOneAndUpdate(
-      {_id: paciente._id}, {$push: {vacunasRecibidas: {'vax': "GRIPE", 'fecha': new Date()}}}
-    )
-  }
+    console.log(historia.ultimaDosisGripe)
+    console.log((new Date() - new Date(historia.ultimaDosisGripe)) / (1000 * 3600 * 24*365) > 1)
+    let check = ((new Date() - new Date(historia.ultimaDosisGripe)) / (1000 * 3600 * 24*365) > 1)
+    console.log('check', check)
+    if (check) {
+      await HistoriaClinica.findOneAndUpdate(
+          {_id: historia._id}, { $set: {'ultimaDosisGripe': new Date()}}
+        )
+      await Usuario.findOneAndUpdate(
+          {_id: paciente._id}, {$push: {vacunasRecibidas: {'vax': "GRIPE", 'fecha': new Date()}}}
+        )
+      } else { return res.status(400).json({
+        ok: false,
+        msg: 'El paciente recibió una dosis contra la gripe hace menos de un año.'
+      }) }
+    } 
 
   if (vax === "FIEBREAMARILLA") {
       if (historia.ultimaDosisFiebre) {
@@ -343,6 +353,20 @@ const vacunarPaciente = async (req, res = response) => {
 
 }
 
+const getAllPacientes = async (req, res = response) => {
+
+  let pacientes = await Usuario.find()
+
+  let centro = await Centro.find()
+
+  res.status(201).json({
+    ok:true,
+    pacientes: pacientes,
+    centros: centro
+  })
+
+}
+
 
 module.exports = {
   getPerfil,
@@ -352,5 +376,6 @@ module.exports = {
   modificarPassword,
   getHistoria,
   getUserDNI,
-  vacunarPaciente
+  vacunarPaciente,
+  getAllPacientes
 }

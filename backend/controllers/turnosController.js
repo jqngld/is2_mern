@@ -78,7 +78,7 @@ const modificarEstado = async (req, res = response) => {
 
 const getTurnosPendientes = async (req, res = response) => {
 
-  let turnosTarget = await Turno.find({estado: 'Pendiente'})
+  let turnosTarget = await Turno.find({estado: 'Esperando confirmación'})
 
   res.status(201).json({
     ok: true,
@@ -103,6 +103,23 @@ const getTurnos = async (req, res = response) => {
   })
 }
 
+const getTurnosCompletos = async (req, res = response) => {
+  var user = req.url.split('/')[2]
+  console.log('hola ?? wtf ', user)
+
+  let info2 = await Usuario.findOne({ _id: user })
+  console.log('ENCONTRADO :', info2.email)
+  let listaTurnosPresente = await Turno.find({paciente: info2.email, estado: 'Presente'})
+  let listaTurnosAusente = await Turno.find({paciente: info2.email, estado: 'Ausente'})
+
+  res.json({
+    ok: true,
+    turnosPresente: listaTurnosPresente,
+    turnosAusente: listaTurnosAusente
+  })
+}
+
+
 let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 function gripeEmpty(dni) {
@@ -112,6 +129,7 @@ function gripeEmpty(dni) {
   }
   return false
 }
+
 function randomDate(start, end) {
   var date = new Date(+start + Math.random() * (end - start));
   return date;
@@ -128,7 +146,8 @@ const nuevoGripe = async (req, res = response) => {
       vax: "GRIPE",
       dateString: '',//date.toLocaleString('es-AR', options),
       paciente: dni2.email,
-      centro: ObjectId(dni2.centro)
+      centro: ObjectId(dni2.centro),
+      estado: "Pendiente"
     })
 
     let historia = HistoriaClinica.findById(ObjectId(dni2.historiaClinica))
@@ -181,6 +200,25 @@ const nuevoGripe = async (req, res = response) => {
   
 }
 
+const gestionarTurno = async (req, res = response) => {
+
+  console.log(req.body.fecha)
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+
+  const filter = { _id: req.url.split('/')[2]}
+  const update = { estado: "Pendiente", date: req.body.fecha, dateString: new Date(req.body.fecha).toLocaleString('es-AR', options) }
+
+  let turnoTarget = await Turno.findById(req.url.split('/')[2])
+  console.log(turnoTarget)
+
+  await Turno.findOneAndUpdate(filter, update)
+
+  res.status(201).json({
+    ok: true,
+    msg: 'Asignaste fecha al turno exitosamente.'
+  })
+
+}
 
 const nuevoFiebre = async (req, res = response) => {
   const { dni } = req.body
@@ -224,10 +262,10 @@ const nuevoFiebre = async (req, res = response) => {
         let fechaza = fechita.toLocaleString('es-AR', options)
 
         let nuevoTurno = new Turno({
-          date: randomDate(Date.now(), Date.now() + 7 * 24 * 60 * 60 * 1000),
+          date: '',
           vax: 'FIEBRE AMARILLA',
           dateString: 'Su turno está pendiente y debe ser gestionado por un administrador',
-          estado: 'PENDIENTE',
+          estado: 'Esperando confirmación',
           paciente: dni2.email,
           centro: ObjectId(dni2.centro)
         })
@@ -243,7 +281,7 @@ const nuevoFiebre = async (req, res = response) => {
             uid: dni2.id,
             name: dni2.name,
             turnos: dni2.turnos,
-            msg: 'Turno guardado con éxito!',
+            msg: 'Turno solicitado con éxito!',
           })
         } catch (e) {
           console.log(e)
@@ -256,45 +294,16 @@ const nuevoFiebre = async (req, res = response) => {
     }}
   }
 
-// const getaaTurnos = async (req, res = response) => {
+const getAllPresente = async (req, res = response) => {
 
-//     const { dni } = req.body
+    let turnos = await Turno.find({estado: "Presente"})
 
-//     console.log('EL ID ES !!!!!! ???? :: ', dni)
-//         console.log(mongoose.Types.ObjectId.isValid(dni));
-//         let dni2 = await Usuario.findById(ObjectId(dni));
+    res.status(201).json({
+      ok: true,
+      turnos: turnos
+    })
 
-//         const getAccount = async (req, res = response) => {
-//             var user = req.url.split('/')[1]
-
-//             info = await Usuario.find({ _id: user }).exec()
-//             console.log(info)
-//             // console.log(info)
-//             res.json({
-//               ok: true,
-//               info,
-//             })
-//           }
-//     if (!dni2) {
-//         return res.status(201).json({
-//           ok: false,
-//           msg: 'El usuario no existe',
-//         })
-//       }
-
-//     try {
-
-//         let data = dni2.turnos
-//         res.json(data)
-
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).json({
-//         ok: false,
-//         msg: 'Por favor hable con el administrador',
-//         })
-//     }
-// }
+}
 
 module.exports = {
   getTurnos,
@@ -302,5 +311,8 @@ module.exports = {
   nuevoGripe,
   getAllTurnosFromFecha,
   modificarEstado,
-  getTurnosPendientes
+  getTurnosPendientes,
+  gestionarTurno,
+  getTurnosCompletos,
+  getAllPresente
 }

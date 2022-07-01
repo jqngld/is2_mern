@@ -5,7 +5,7 @@ const Usuario = require('./Usuario')
 const turnoSchema = new mongoose.Schema({
   date: {
     type: Date,
-    required: true,
+    required: false,
   },
   dateString: {
     type: String,

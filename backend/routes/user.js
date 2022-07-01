@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { getPerfil, usuarioRegistradoPorVac, vacunarPaciente, getHistoria, modificarCentro, modificarMail, modificarPassword, getUserDNI } = require('../controllers/userController');
+const { getPerfil, usuarioRegistradoPorVac, getAllPacientes, vacunarPaciente, getHistoria, modificarCentro, modificarMail, modificarPassword, getUserDNI } = require('../controllers/userController');
 
 router.get('/:id', getPerfil);
 router.get('/historia/:id', getHistoria)
+router.post('/getallpacientes', getAllPacientes)
 
 router.post('/getpaciente', getUserDNI)
 
