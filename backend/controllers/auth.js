@@ -47,19 +47,14 @@ const crearUsuario = async (req, res = response) => {
       var today = new Date()
       var birthDate = new Date(_date)
       var age = today.getFullYear() - birthDate.getFullYear()
-      // var m = today.getMonth() - birthDate.getMonth()
-      // if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      //   age--
-      // }
       return age
     }
 
     function getRiesgo(age) {
-      if (age > 60) return true
+      if (age > 60) { return true }
       return false
     }
 
-    let edad = getAge(date)
 
     console.log(req.body.centro)
     let centroFetch = await Centro.findOne({name: req.body.centro})
@@ -72,8 +67,8 @@ const crearUsuario = async (req, res = response) => {
       lastname: req.body.lastname,
       tel: req.body.tel,
       date: req.body.date,
-      age: edad,
-      riesgo: getRiesgo(edad),
+      age: getAge(req.body.date),
+      riesgo: getRiesgo(getAge(req.body.date)),
       turnos: [],
       centro: ObjectId(centroFetch._id),
       historiaClinica: null,
@@ -167,7 +162,7 @@ const revalidarToken = async (req, res = response) => {
       ok: true,
       uid: uid,
       name: name,
-      is_professor: usuario.is_professor,
+      // is_professor: usuario.is_professor,
       token,
     })
   } catch (e) {

@@ -57,7 +57,20 @@ function AusentePresente( turno ) {
     .catch(function (err) {
         Swal.fire('Error', 'Hubo un error', 'error')
     })
-
+    } else {
+      estadoNuevo.obs = ' '
+      axios.post(
+        "http://localhost:4000/api/turno/modificarestado/" + turno.turno._id, estadoNuevo
+    ).then(function (response) {
+        console.log(response)
+        Swal.fire('Éxito', 'Modificaste el estado del turno con éxito', 'success')
+            .then(function() {
+                window.location.reload()
+          })
+      })
+    .catch(function (err) {
+        Swal.fire('Error', 'Hubo un error', 'error')
+    })
 
     }
   }
@@ -91,6 +104,20 @@ function AusentePresente( turno ) {
     })
 
 
+    } else {
+      estadoNuevo.obs = ' '
+      axios.post(
+        "http://localhost:4000/api/turno/modificarestado/" + turno.turno._id, estadoNuevo
+    ).then(function (response) {
+        console.log(response)
+        Swal.fire('Éxito', 'Modificaste el estado del turno con éxito', 'success')
+            .then(function() {
+                window.location.reload()
+          })
+      })
+    .catch(function (err) {
+        Swal.fire('Error', 'Hubo un error', 'error')
+    })
     }
   }
 

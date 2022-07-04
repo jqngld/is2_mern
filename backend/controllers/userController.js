@@ -3,6 +3,7 @@ const Centro = require('../models/Centro.js')
 const HistoriaClinica = require('../models/HistoriaClinica')
 const bcrypt = require('bcryptjs')
 const { ObjectId } = require('mongodb');
+const Turno = require('../models/Turno.js');
 // const ObjectId = require('mongoose/lib/schema/objectid.js')
 
 exports.create = (req, res) => {
@@ -42,6 +43,15 @@ const getUserDNI = async (req, res = response) => {
           msg: 'Por favor hable con el administrador',
       })
   }
+}
+
+const modificarRiesgo = async (req, res = response) => {
+
+  console.log('asdito', req.body)
+  let value = !req.body.riesgo
+  console.log('es', value)
+  await Usuario.findOneAndUpdate({"_id": req.body._id}, {$set: {"riesgo": value}})
+
 }
 
 const usuarioRegistradoPorVac = async (req, res = response) => {
@@ -105,7 +115,7 @@ const usuarioRegistradoPorVac = async (req, res = response) => {
       riesgo: getRiesgo(edad),
       turnos: [],
       centro: req.body.centro,
-      historiaClinica: null,
+      historiaClinica: 999,
       is_vacunador: false
     })
 
@@ -135,17 +145,15 @@ const getHistoria = async (req, res = response) => {
 
   var user = req.url.split('/')[2]
   let info2 = await Usuario.findOne({ _id: user })
-  console.log(user)
   let historia = await HistoriaClinica.findById(ObjectId(info2.historiaClinica))
-  console.log(info2.name, info2.historiaClinica, historia._id)
-
-  res.json({
-    risk: info2.risk,
-    cantCovid: historia.cantidadDosisCovid,
-    ultCovid: historia.ultimaDosisCovid,
-    ultGripe: historia.ultimaDosisGripe,
-    ultFiebre: historia.ultimaDosisFiebre
-  })
+  if (historia)
+    {res.json({
+      risk: info2.riesgo,
+      cantCovid: historia.cantidadDosisCovid,
+      ultCovid: historia.ultimaDosisCovid,
+      ultGripe: historia.ultimaDosisGripe,
+      ultFiebre: historia.ultimaDosisFiebre
+    })}
 
 }
 
@@ -168,6 +176,7 @@ const getHistoria = async (req, res = response) => {
       is_vacunador: info.is_vacunador,
       is_admin: info.is_admin,
       centro: centroFetch.name,
+      historiaClinica: info.historiaClinica
     })
   }
 
@@ -195,11 +204,17 @@ const modificarMail = async (req, res = response) => {
      })
    }
   }
+  // await Turno.updateMany({"paciente": info2.email}, {$set: {"paciente": req.body.email}}), function (err, res){
+  //   if (err) throw err;
+  // }
   try {
-    Usuario.updateOne({ "_id": ObjectId(user)}, {$set: {"email": req.body.email}}, function(err, res)  
+    await Turno.updateMany({"paciente": info2.email}, {$set: {"paciente": req.body.email}}), function (err, res){
+         if (err) throw err;
+     }
+    await Usuario.updateOne({ "_id": ObjectId(user)}, {$set: {"email": req.body.email}}, function(err, res)  
     {
-      if (err) throw err; console.log("yass")
-    })
+      if (err) throw err;
+    }).clone()
     res.status(201).json({
       ok: true,
       name: info2.name,
@@ -377,5 +392,6 @@ module.exports = {
   getHistoria,
   getUserDNI,
   vacunarPaciente,
-  getAllPacientes
+  getAllPacientes,
+  modificarRiesgo
 }

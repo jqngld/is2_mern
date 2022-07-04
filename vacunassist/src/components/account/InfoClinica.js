@@ -20,7 +20,7 @@ function VerHistClinica() {
   let store = useStore().getState()
   let id = store.auth.uid
 
-  const [perfil, setPerfil] = useState([])
+  const [perfil, setPerfil] = useState()
 
   useEffect(() => {
     axios.get('http://localhost:4000/api/user/historia/' + id).then((res) => {
@@ -36,9 +36,18 @@ function VerHistClinica() {
   }
 
   function checkRiesgo(riesgo) {
+    console.log('HOLA', riesgo)
     if (riesgo) {
       return "Sí"
     } return "No"
+  }
+
+  function checkHistoria() {
+    if (perfil) {
+      console.log('true', perfil)      
+      return true
+    } console.log('false', perfil)
+    return false
   }
 
   return (
@@ -47,14 +56,14 @@ function VerHistClinica() {
       <div classname=''>
       <div className='text-white font-bold text-4xl pb-4'>
         Mi historia clínica
-      </div>
-          <div className='text-white font-bold text-1xl p-2'>
+      </div> {checkHistoria() ? (<div className='text-white font-bold text-1xl p-2'>
             <h1>Cantidad de dosis de COVID19: {perfil.cantCovid}</h1> <hr className='m-4' />
             <h1>Fecha de última dosis de COVID19 recibida: {checkContenido(perfil.ultCovid)}</h1> <hr className='m-4' />
             <h1>Fecha de última dosis de gripe recibida: {checkContenido(perfil.ultGripe)}</h1> <hr className='m-4' />
             <h1>Fecha de última dosis de fiebre amarilla recibida: {checkContenido(perfil.ultFiebre)}</h1> <hr className='m-4' />
-            <h1>Paciente de riesgo: {checkRiesgo(perfil.riesgo)}</h1>
-          </div>
+            <h1>Paciente de riesgo: {checkRiesgo(perfil.risk)}</h1>
+          </div>) : (<h1 className='text-white font-bold text-1xl p-2'> No hay información sobre historia clínica. </h1>)}
+          
         </div>  
     </div>
     //data && Array.isArray(data) && data.length > 0 && data.map((user, i) =>

@@ -50,7 +50,7 @@ function HistorialVacunas() {
         <div className='w-full'>
           <div className='text-white font-bold text-4xl p-2'>Mi historial de vacunación</div>
           <hr className='m'/>
-          <h1 className='text-white font-bold text-2xl p-2'>Vacunas recibidas</h1>
+          <h1 className='text-white font-bold text-2xl p-2'>Turnos a los que te presentaste</h1>
           <VerTurnos turnos={turnosP} />
           <hr className='m' />
           <h1 className='text-white font-bold text-2xl p-2'>Turnos a los que no te presentaste</h1>

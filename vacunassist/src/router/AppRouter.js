@@ -16,6 +16,7 @@ import InfoPersonal from '../components/account/InfoPersonal'
 import EditPerfil from '../components/account/EditPerfil'
 import Dashboard from '../components/addnew/Dashboard'
 import { Alumno } from '../components/addnew/Alumno'
+import ModificarRiesgo from '../components/ui/ModificarRiesgo'
 
 import ReporteVacunas from '../components/ui/ReporteVacunas'
 import GestionarTurno from '../components/ui/GestionarTurno'
@@ -160,6 +161,14 @@ export const AppRouter = (history) => {
             exact
             path='/modificarcentro'
             component={ModificarCentro}
+            isAuthenticated={!!uid}
+            history={history}
+          />
+
+          <PrivateRoute
+            exact
+            path='/modificarriesgo'
+            component={ModificarRiesgo}
             isAuthenticated={!!uid}
             history={history}
           />

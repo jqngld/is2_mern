@@ -58,7 +58,7 @@ export const VerTurnosVac = () => {
             Tu centro: {perfil.centro}
           </div>
           <div className='text-white font-bold text-1xl p-5 pb-4'>
-            Fecha: 
+            {/* Fecha: 
             <DatePicker
                   onChange={(date) => handleChange(date)}
                   peekNextMonth
@@ -66,7 +66,7 @@ export const VerTurnosVac = () => {
                   showYearDropdown
                   dropdownMode='select'
                   dateFormat='yyyy/MM/dd'
-                />
+                /> */}
 
             Turnos para el día {startDate.toLocaleString('es-AR').split(',')[0].replaceAll('/', '-')}
             {(turnos.listaturnos) ? console.log('t', turnos.listaturnos.length) : console.log('nadita')}

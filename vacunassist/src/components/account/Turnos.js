@@ -40,7 +40,7 @@ function VerTurnos({ turnos }) {
             <br></br>
           </div>
         ))}
-    </div> ) : ( <> <h1 className='text-white text-left font-bold flex-col p-4'> No hay ningún turno programado. </h1> </>)
+    </div> ) : ( <> <h1 className='text-white text-left font-bold flex-col p-4'> No hay ningún turno. </h1> </>)
   ) : (
     <>
       <h1>Turnos undefined</h1>

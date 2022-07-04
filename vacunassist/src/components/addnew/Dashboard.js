@@ -25,6 +25,14 @@ export const Dashboard = () => {
     })
   }, [])
 
+  function checkHistoria(his) {
+    if (his === 999) {
+      console.log('faty', his)
+      return false
+    } console.log('owo', his) 
+    return true
+  }
+
   // useEffect(() => {
   //   dispatch(loadGeneral())
   // }, [dispatch])
@@ -35,7 +43,6 @@ export const Dashboard = () => {
 
   return (
     <div className='rowC'> 
-    {console.log('asd', perfil.is_admin)}
     <> { perfil.is_vacunador ? <Sidebar22/> : perfil.is_admin ? <Sidebar33/> : <Sidebar/>} </>
         <div className='w-full center'><Link to='/home' aria-label='Workout logo'><h1 className=''>
           <img
@@ -48,6 +55,14 @@ export const Dashboard = () => {
       </Link>
       <h1 className='items-center text-white mt-16 justify-center'>
         Bienvenid@ al sistema de turnos online de VACUNASSIST {console.log(perfil.is_vacunador)}
+        <br></br><br></br>
+        {
+        checkHistoria(perfil.historiaClinica) ? "" : 
+        
+        <Link to='/addnew'>
+          <h1 className='text-white font-bold text-1xl p-2'>Tu cuenta no tiene asociada una historia clínica. Click para agregar</h1>
+        </Link>
+        }
       </h1></div>
     </div>
   )

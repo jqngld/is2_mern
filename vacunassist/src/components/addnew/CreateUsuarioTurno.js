@@ -190,11 +190,11 @@ function CreateUsuarioTurno() {
       .then(function (response) {
         console.log(response);
         Swal.fire("Registro exitoso", response.data.msg, "success");
-        axios.post(
-          "http://localhost:4000/api/historiaclinica/asignarhistoria/" +
-            newUsuarioPorVacunador.dni,
-          newHistoria
-        );
+        // axios.post(
+        //   "http://localhost:4000/api/historiaclinica/asignarhistoria/" +
+        //     newUsuarioPorVacunador.dni,
+        //   newHistoria
+        // );
       })
       .catch(function (err) {
         Swal.fire("Error", err.response.data.msg, "error");

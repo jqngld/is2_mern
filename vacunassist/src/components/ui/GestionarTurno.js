@@ -81,8 +81,7 @@ export const GestionarTurno = () => {
                   maxDate={new Date()}
                   dropdownMode="select"
                   dateFormat="dd/MM/yyyy"
-                />   
-                      
+              />        
               </div>
               {/* <button
                 onClick={async () => {

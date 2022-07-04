@@ -48,7 +48,6 @@ const crearHistoria = async (req, res = response) => {
   try {
 
     console.log('EL ID ES !!!!!! ???? :: ', dni)
-    console.log(mongoose.Types.ObjectId.isValid(dni));
     let dni2 = await Usuario.findById(ObjectId(dni));
 
     if (!dni2) {
@@ -67,12 +66,6 @@ const crearHistoria = async (req, res = response) => {
       ultimaDosisFiebre: req.body.ultDosisFiebre
     })
 
-    console.log('--')
-    console.log(historia.ultimaDosisCovid)
-    console.log(historia.ultimaDosisGripe)
-    console.log(historia.ultimaDosisFiebre)
-    console.log(historia.cantidadDosisCovid)
-
     await historia.save()
 
     function randomDate(start, end) {
@@ -88,10 +81,8 @@ const crearHistoria = async (req, res = response) => {
       return false
     }
 
-    let ayudita;
-    if(!prioEdad(dni2.edad)) {
+    if(!prioEdad(dni2.age)) {
       dni2.riesgo = riskParse(req.body.riesgo)
-      ayudita = riskParse(req.body.riesgo)
     }
 
     function gripeEmpty(dni) {
@@ -103,8 +94,8 @@ const crearHistoria = async (req, res = response) => {
     }
 
     function prioEdad(age) {
-      if (age > 60)
-        return true;
+      if (age > 60) {
+        return true }
       return false;
     }
 
@@ -129,32 +120,7 @@ const crearHistoria = async (req, res = response) => {
 
     }
 
-    if (!covidEmpty(dni2)) {
-      if(ayudita) { 
-        let fechita = randomDate(Date.now(), (Date.now()+(7*24*60*60*1000)))
-        let fechaza = fechita.toLocaleString('es-AR', options)
-        console.log(fechaza)
-  
-        let index = dni2.turnos.findIndex(e => e.vax == "COVID19")
-        dni2.turnos.splice(index, 1);
-  
-        console.log('PATRISIA', index)
-  
-        let nuevoTurno = new Turno ({
-          date: randomDate(Date.now(), (Date.now()+(7*24*60*60*1000))),
-          vax: "COVID19",
-          dateString: fechaza,
-          paciente: dni2.email,
-          centro: ObjectId(dni2.centro),
-          estado: "Pendiente"
-        })
-
-        dni2.turnos.push(nuevoTurno)}
-        await nuevoTurno.save()
-
-    }
-
-    if (!dni2.riesgo && covidEmpty(dni2) && historia.cantidadDosisCovid < 2) {
+    if (!dni2.riesgo && covidEmpty(dni2) && historia.cantidadDosisCovid < 2 && dni2.age >= 18) {
 
       let fechita = randomDate(Date.now(), (Date.now()+(7*24*60*60*1000)))
       let fechaza = fechita.toLocaleString('es-AR', options)
@@ -163,7 +129,7 @@ const crearHistoria = async (req, res = response) => {
       let nuevoTurno = new Turno({
         date: '',
         vax: "COVID19",
-        dateString: "Su turno pronto será asignado por un administrador",
+        dateString: "Su turno pronto será confirmado por un administrador",
         paciente: dni2.email,
         centro: ObjectId(dni2.centro),
         estado: 'Esperando confirmación'
@@ -226,11 +192,6 @@ const crearHistoria = async (req, res = response) => {
     }
 
     await dni2.save()
-
-    console.log('EL ID ES ::', dni2.id)
-    console.log('EL R ES ::', req.body.riesgo)
-    console.log('EL HID ES ::', historia.id)
-    console.log(dni2.email)
 
     res.status(201).json({
       ok: true,
