@@ -42,8 +42,8 @@ function VerHistClinica() {
     } return "No"
   }
 
-  function checkHistoria() {
-    if (perfil.cantCovid = 999) {
+  function checkHistoria(value) {
+    if (value = 999) {
       console.log('false', perfil)      
       return false
     } console.log('true', perfil)
@@ -56,7 +56,7 @@ function VerHistClinica() {
       <div classname=''>
       <div className='text-white font-bold text-4xl pb-4'>
         Mi historia clínica
-      </div> {checkHistoria() ? (<div className='text-white font-bold text-1xl p-2'>
+      </div> {checkHistoria(perfil.cantCovid) ? (<div className='text-white font-bold text-1xl p-2'>
             <h1>Cantidad de dosis de COVID19: {perfil.cantCovid}</h1> <hr className='m-4' />
             <h1>Fecha de última dosis de COVID19 recibida: {checkContenido(perfil.ultCovid)}</h1> <hr className='m-4' />
             <h1>Fecha de última dosis de gripe recibida: {checkContenido(perfil.ultGripe)}</h1> <hr className='m-4' />

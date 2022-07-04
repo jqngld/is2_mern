@@ -41,7 +41,7 @@ function VacunarExpress() {
 
     axios.post("http://localhost:4000/api/user/getpaciente", buscar)
     .then((res) => {
-      setPaciente(res.data.paciente)
+      setPaciente(res.data.pacientes[0])
       setHistoria(res.data.historia)
       setBoton("")
       setBotonStyle('text-white w-full text-sm rounded h-8 font-bold boton-activo')
