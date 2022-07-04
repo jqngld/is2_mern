@@ -146,15 +146,16 @@ const getHistoria = async (req, res = response) => {
   var user = req.url.split('/')[2]
   let info2 = await Usuario.findOne({ _id: user })
   let historia = await HistoriaClinica.findById(ObjectId(info2.historiaClinica))
-  if (historia)
-    {res.json({
+  if (historia.cantidadDosisCovid != 999)
+    {
+      res.json({
       risk: info2.riesgo,
       cantCovid: historia.cantidadDosisCovid,
       ultCovid: historia.ultimaDosisCovid,
       ultGripe: historia.ultimaDosisGripe,
       ultFiebre: historia.ultimaDosisFiebre
-    })}
-
+    })
+  }
 }
 
   const getPerfil = async (req, res = response) => {

@@ -26,10 +26,9 @@ export const Dashboard = () => {
   }, [])
 
   function checkHistoria(his) {
-    if (his === 999) {
-      console.log('faty', his)
+    if (his.cantidadDosisCovid === 999) {
       return false
-    } console.log('owo', his) 
+    } 
     return true
   }
 
@@ -57,7 +56,7 @@ export const Dashboard = () => {
         Bienvenid@ al sistema de turnos online de VACUNASSIST {console.log(perfil.is_vacunador)}
         <br></br><br></br>
         {
-        checkHistoria(perfil.historiaClinica) ? "" : 
+        (perfil.historiaClinica === "ObjectId(62c3705b5758c52ae5c876aa)") ? "" : 
         
         <Link to='/addnew'>
           <h1 className='text-white font-bold text-1xl p-2'>Tu cuenta no tiene asociada una historia clínica. Click para agregar</h1>

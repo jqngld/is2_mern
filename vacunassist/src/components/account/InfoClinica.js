@@ -19,6 +19,7 @@ import Sidebar from '../ui/Sidebar'
 function VerHistClinica() {
   let store = useStore().getState()
   let id = store.auth.uid
+  let num;
 
   const [perfil, setPerfil] = useState()
 
@@ -42,8 +43,8 @@ function VerHistClinica() {
     } return "No"
   }
 
-  function checkHistoria(value) {
-    if (value = 999) {
+  function checkHistoria() {
+    if (num === 999) {
       console.log('false', perfil)      
       return false
     } console.log('true', perfil)
@@ -55,8 +56,8 @@ function VerHistClinica() {
       <Sidebar/>
       <div classname=''>
       <div className='text-white font-bold text-4xl pb-4'>
-        Mi historia clínica
-      </div> {checkHistoria(perfil.cantCovid) ? (<div className='text-white font-bold text-1xl p-2'>
+        Mi historia clínica 
+      </div> {(perfil) ? (<div className='text-white font-bold text-1xl p-2'>
             <h1>Cantidad de dosis de COVID19: {perfil.cantCovid}</h1> <hr className='m-4' />
             <h1>Fecha de última dosis de COVID19 recibida: {checkContenido(perfil.ultCovid)}</h1> <hr className='m-4' />
             <h1>Fecha de última dosis de gripe recibida: {checkContenido(perfil.ultGripe)}</h1> <hr className='m-4' />
