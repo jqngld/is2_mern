@@ -43,11 +43,11 @@ function VerHistClinica() {
   }
 
   function checkHistoria() {
-    if (perfil) {
-      console.log('true', perfil)      
-      return true
-    } console.log('false', perfil)
-    return false
+    if (perfil.cantCovid = 999) {
+      console.log('false', perfil)      
+      return false
+    } console.log('true', perfil)
+    return true
   }
 
   return (
