@@ -311,6 +311,7 @@ const vacunarPaciente = async (req, res = response) => {
   }
 
   let vax = req.url.split('/')[2]
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   
   if (vax === "COVID19") {
     if (historia.cantidadDosisCovid >= 2) {
@@ -322,6 +323,8 @@ const vacunarPaciente = async (req, res = response) => {
       await HistoriaClinica.findOneAndUpdate(
         {_id: historia._id}, { $inc: {'cantidadDosisCovid': 1}, $set: {'ultimaDosisCovid': new Date()}}
       )
+      await Turno.insertMany([ { date: new Date(), dateString: new Date().toLocaleString('es-AR', options),
+                                 vax: "COVID19", paciente: paciente.email, estado: "Presente", centro: paciente.centro } ])
       await Usuario.findOneAndUpdate(
         {_id: paciente._id}, {$push: {vacunasRecibidas: {'vax': "COVID19", 'fecha': new Date()}}}
       )
@@ -337,6 +340,8 @@ const vacunarPaciente = async (req, res = response) => {
       await HistoriaClinica.findOneAndUpdate(
           {_id: historia._id}, { $set: {'ultimaDosisGripe': new Date()}}
         )
+        await Turno.insertMany([ { date: new Date(), dateString: new Date().toLocaleString('es-AR', options),
+                                 vax: "GRIPE", paciente: paciente.email, estado: "Presente", centro: paciente.centro } ])
       await Usuario.findOneAndUpdate(
           {_id: paciente._id}, {$push: {vacunasRecibidas: {'vax': "GRIPE", 'fecha': new Date()}}}
         )
@@ -362,6 +367,8 @@ const vacunarPaciente = async (req, res = response) => {
         await HistoriaClinica.findOneAndUpdate(
         {_id: historia._id}, { $set: {'ultimaDosisFiebre': new Date()}}
       )
+      await Turno.insertMany([ { date: new Date(), dateString: new Date().toLocaleString('es-AR', options),
+                                 vax: "FIEBRE AMARILLA", paciente: paciente.email, estado: "Presente", centro: paciente.centro } ])
       await Usuario.findOneAndUpdate(
         {_id: paciente._id}, {$push: {vacunasRecibidas: {'vax': "FIEBRE AMARILLA", 'fecha': new Date()}}}
       )
