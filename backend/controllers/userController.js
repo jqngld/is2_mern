@@ -103,6 +103,15 @@ const usuarioRegistradoPorVac = async (req, res = response) => {
       return false
     }
 
+    const historiaNueva = new HistoriaClinica({
+      ultimaDosisCovid: '',
+      ultimaDosisGripe: '',
+      ultimaDosisFiebre: '',
+      cantidadDosisCovid: 0
+    })
+
+    await historiaNueva.save()
+
     const usernuevo = new Usuario({
       email: req.body.email,
       name: req.body.name,
@@ -115,10 +124,9 @@ const usuarioRegistradoPorVac = async (req, res = response) => {
       riesgo: getRiesgo(edad),
       turnos: [],
       centro: req.body.centro,
-      historiaClinica: ObjectId('62c3705b5758c52ae5c876aa'),
+      historiaClinica: ObjectId(historiaNueva._id),
       is_vacunador: false
     })
-
     const salt = bcrypt.genSaltSync()
     usernuevo.password = bcrypt.hashSync(req.body.password, salt)
 
