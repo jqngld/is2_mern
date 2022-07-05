@@ -206,9 +206,65 @@ const nuevoGripe = async (req, res = response) => {
       msg: 'Error al generar nuevo turno',
     })
   }
-    
+}
 
-  
+const nuevoCovid = async (req, res = response) => {
+  const { dni } = req.body
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+  let dni2 = await Usuario.findById(ObjectId(dni))
+
+  if (dni2.age < 18) {
+    return res.status(401).json({
+      ok: false,
+      msg: 'Los menores de edad no pueden solicitar turnos para la vacuna contra el COVID19'
+    })
+  }
+
+    let nuevoTurno = new Turno({
+      date: '', //randomDate(Date.now(), (Date.now()+(90*24*60*60*1000))),
+      vax: "COVID19",
+      dateString: '',//date.toLocaleString('es-AR', options),
+      paciente: dni2.email,
+      centro: ObjectId(dni2.centro),
+      estado: "Pendiente"
+    })
+
+    let historia = await HistoriaClinica.findById(ObjectId(dni2.historiaClinica))
+
+    if (historia.cantidadDosisCovid >= 2) {
+      return res.status(401).json({
+        ok: false,
+        msg: 'No se puede solicitar el turno porque tu calendario de vacunación está completo'
+      })
+    }
+
+    if (dni2.riesgo || dni2.age >= 60) {
+      nuevoTurno.date = randomDate(Date.now(), (Date.now()+(7*24*60*60*1000)))
+      nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
+    } else {
+      nuevoTurno.dateString = 'Su turno pronto será confirmado por un administrador'
+    }
+
+     await nuevoTurno.save()
+
+  try {
+
+    await dni2.save()
+
+    res.status(201).json({
+      ok: true,
+      uid: dni2.id,
+      name: dni2.name,
+      turnos: dni2.turnos,
+      msg: 'Turno guardado con éxito!',
+    })
+  } catch (e) {
+    console.log(e)
+    res.json({
+      ok: false,
+      msg: 'Error al generar nuevo turno',
+    })
+  }
 }
 
 const gestionarTurno = async (req, res = response) => {
@@ -325,5 +381,6 @@ module.exports = {
   getTurnosPendientes,
   gestionarTurno,
   getTurnosCompletos,
-  getAllPresente
+  getAllPresente,
+  nuevoCovid
 }

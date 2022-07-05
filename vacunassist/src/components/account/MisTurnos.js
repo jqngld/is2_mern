@@ -16,6 +16,7 @@ import axios from 'axios'
 import VerTurnos from './Turnos'
 import TurnoFiebre from './TurnoFiebre'
 import TurnoGripe from './TurnoGripe'
+import TurnoCovid from './TurnoCovid'
 import Sidebar from '../ui/Sidebar'
 
 function MisTurnos() {
@@ -61,6 +62,7 @@ function MisTurnos() {
             <TurnoFiebre turnos2={turnos} />
           )}
             <TurnoGripe turnos2={turnos} />
+            <TurnoCovid turnos2={turnos}/>
           </div>
         </>
       )}
