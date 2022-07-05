@@ -139,6 +139,8 @@ const nuevoGripe = async (req, res = response) => {
   const { dni } = req.body
   let dni2 = await Usuario.findById(ObjectId(dni))
 
+  console.log('n', dni2.name)
+  console.log('h', dni2.historiaClinica)
   if (gripeEmpty(dni2)) {
 
     let nuevoTurno = new Turno({
@@ -150,32 +152,39 @@ const nuevoGripe = async (req, res = response) => {
       estado: "Pendiente"
     })
 
-    let historia = HistoriaClinica.findById(ObjectId(dni2.historiaClinica))
+    let historia = await HistoriaClinica.findById(ObjectId(dni2.historiaClinica))
 
     var ahora = new Date()
-    let compDate2 = ahora - historia.ultimaDosisGripe;
+    let compDate2 = ahora - historia.ultimaDosisGripe
+    console.log('a', ahora)
+    console.log('b', historia.ultimaDosisGripe)
+    console.log('dif', compDate2)
 
     if (compDate2<31556952000)
     {
       if (dni2.riesgo) {
+        console.log('AAA')
         nuevoTurno.date = randomDate(new Date(historia.ultimaDosisGripe).getTime()+(365*24*60*60*1000), ((new Date(historia.ultimaDosisGripe).getTime()+(365*24*60*60*1000))+(180*24*60*60*1000)))
         nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
       } else {
+        console.log('BBB')
         nuevoTurno.date = randomDate(new Date(historia.ultimaDosisGripe).getTime()+(365*24*60*60*1000), ((new Date(historia.ultimaDosisGripe).getTime()+(365*24*60*60*1000))+(180*24*60*60*1000)))
         nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
       }
     } else { 
         if (dni2.riesgo) {
+          console.log('GGG')
           nuevoTurno.date = randomDate(Date.now(), (Date.now()+(90*24*60*60*1000)))
           nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
         } else {
+          console.log('FFF')
           nuevoTurno.date = randomDate(Date.now(), (Date.now()+(180*24*60*60*1000)))
           nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
         }
     }
 
-    await nuevoTurno.save()
-    dni2.turnos.push(nuevoTurno) 
+     await nuevoTurno.save()
+     dni2.turnos.push(nuevoTurno) 
 
   try {
 
