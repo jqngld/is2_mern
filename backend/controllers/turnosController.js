@@ -158,10 +158,10 @@ const nuevoGripe = async (req, res = response) => {
     if (compDate2<31556952000)
     {
       if (dni2.riesgo) {
-        nuevoTurno.date = randomDate(Date.now(), (Date.now()+(455*24*60*60*1000)))
+        nuevoTurno.date = randomDate(new Date(historia.ultimaDosisGripe).getTime()+(365*24*60*60*1000), ((new Date(historia.ultimaDosisGripe).getTime()+(365*24*60*60*1000))+(180*24*60*60*1000)))
         nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
       } else {
-        nuevoTurno.date = randomDate(Date.now(), (Date.now()+(545*24*60*60*1000)))
+        nuevoTurno.date = randomDate(new Date(historia.ultimaDosisGripe).getTime()+(365*24*60*60*1000), ((new Date(historia.ultimaDosisGripe).getTime()+(365*24*60*60*1000))+(180*24*60*60*1000)))
         nuevoTurno.dateString = nuevoTurno.date.toLocaleString('es-AR', options)
       }
     } else { 

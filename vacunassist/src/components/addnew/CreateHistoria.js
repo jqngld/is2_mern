@@ -93,7 +93,7 @@ function CreateHistoria() {
               name='cant'
               className='form-select text-sm text-white w-full py-3 rounded m-2 bg-black bg-opacity-30'
             >
-              <option value=" " selected="true" disabled="true">Seleccioná una opción</option>
+              <option value="" selected="true" disabled="true">Seleccioná una opción</option>
               <option value='0'>0</option>
               <option value='1'>1</option>
               <option value='2'>2</option>

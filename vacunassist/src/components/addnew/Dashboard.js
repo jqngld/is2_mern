@@ -54,9 +54,9 @@ export const Dashboard = () => {
       </Link>
       <h1 className='items-center text-white mt-16 justify-center'>
         Bienvenid@ al sistema de turnos online de VACUNASSIST {console.log(perfil.is_vacunador)}
-        <br></br><br></br>
+        <br></br><br></br> { console.log('hist', perfil.historiaClinica) }
         {
-        (perfil.historiaClinica === "ObjectId(62c3705b5758c52ae5c876aa)") ? "" : 
+        (perfil.historiaClinica !== "62c3705b5758c52ae5c876aa" ) ? "  " : 
         
         <Link to='/addnew'>
           <h1 className='text-white font-bold text-1xl p-2'>Tu cuenta no tiene asociada una historia clínica. Click para agregar</h1>

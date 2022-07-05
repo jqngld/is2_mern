@@ -347,6 +347,12 @@ const vacunarPaciente = async (req, res = response) => {
     } 
 
   if (vax === "FIEBREAMARILLA") {
+      if (paciente.age >= 60) {
+        return res.status(400).json({
+          ok: false,
+          msg: 'El paciente no puede ser vacunado porque es mayor de 60 años.'
+        })
+      }
       if (historia.ultimaDosisFiebre) {
         return res.status(400).json({
           ok: false,
