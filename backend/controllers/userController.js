@@ -127,7 +127,6 @@ const usuarioRegistradoPorVac = async (req, res = response) => {
       historiaClinica: ObjectId(historiaNueva._id),
       is_vacunador: false
     })
-
     const salt = bcrypt.genSaltSync()
     usernuevo.password = bcrypt.hashSync(req.body.password, salt)
 

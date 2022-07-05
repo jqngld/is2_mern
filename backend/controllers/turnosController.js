@@ -57,6 +57,7 @@ const modificarEstado = async (req, res = response) => {
   let filterHistoria = { _id: paciente.historiaClinica }
   await Usuario.findOneAndUpdate({email: turnoTarget.paciente}, {$pull: { turnos: { vax: turnoTarget.vax }}})
 
+  await Usuario.findOneAndUpdate({email: turnoTarget.paciente}, {$pull: { turnos: { _id: req.url.split('/')[2] }}})
   if ( req.body.estado === "Presente") {
     if (turnoTarget.vax === "COVID19") {
       await HistoriaClinica.findOneAndUpdate(filterHistoria, { $inc: {'cantidadDosisCovid': 1}, $set: {'ultimaDosisCovid': new Date()}})
@@ -123,13 +124,13 @@ const getTurnosCompletos = async (req, res = response) => {
 
 let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
-function gripeEmpty(dni) {
-  let found = dni.turnos.find(e => e.vax === "GRIPE")
-  if (found === undefined) {
-    return true
-  }
-  return false
-}
+// function gripeEmpty(dni) {
+//   let found = dni.turnos.find(e => e.vax === "GRIPE")
+//   if (found === undefined) {
+//     return true
+//   }
+//   return false
+// }
 
 function randomDate(start, end) {
   var date = new Date(+start + Math.random() * (end - start));
@@ -142,7 +143,7 @@ const nuevoGripe = async (req, res = response) => {
 
   console.log('n', dni2.name)
   console.log('h', dni2.historiaClinica)
-  if (gripeEmpty(dni2)) {
+
 
     let nuevoTurno = new Turno({
       date: '', //randomDate(Date.now(), (Date.now()+(90*24*60*60*1000))),
@@ -205,7 +206,7 @@ const nuevoGripe = async (req, res = response) => {
       msg: 'Error al generar nuevo turno',
     })
   }
-    }
+    
 
   
 }
