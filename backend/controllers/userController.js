@@ -115,7 +115,7 @@ const usuarioRegistradoPorVac = async (req, res = response) => {
       riesgo: getRiesgo(edad),
       turnos: [],
       centro: req.body.centro,
-      historiaClinica: 999,
+      historiaClinica: ObjectId('62c3705b5758c52ae5c876aa'),
       is_vacunador: false
     })
 
@@ -146,7 +146,8 @@ const getHistoria = async (req, res = response) => {
   var user = req.url.split('/')[2]
   let info2 = await Usuario.findOne({ _id: user })
   let historia = await HistoriaClinica.findById(ObjectId(info2.historiaClinica))
-  if (historia.cantidadDosisCovid != 999)
+  if (historia)
+  {if (historia.cantidadDosisCovid != 999)
     {
       res.json({
       risk: info2.riesgo,
@@ -155,7 +156,7 @@ const getHistoria = async (req, res = response) => {
       ultGripe: historia.ultimaDosisGripe,
       ultFiebre: historia.ultimaDosisFiebre
     })
-  }
+  }}
 }
 
   const getPerfil = async (req, res = response) => {
