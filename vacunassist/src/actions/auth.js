@@ -8,7 +8,7 @@ export const startLogin = (email, password) => {
     const resp = await fetchSinToken('auth', { email, password }, 'POST')
     const body = await resp.json()
     if (body.ok) {
-      if (email === "a4@a.com") {
+      if (email === "lisandro@gmail.com") {
         Swal.fire('', 'Acceso exitoso', 'success')
         localStorage.setItem('token', body.token)
         localStorage.setItem('token-init-date', new Date().getTime())

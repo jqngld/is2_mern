@@ -53,10 +53,11 @@ const modificarEstado = async (req, res = response) => {
   let turnoTarget = await Turno.findOne(filter)
   console.log('a', turnoTarget.vax)
 
-  let paciente = await Usuario.findOne({email: turnoTarget.paciente})
+  let paciente = await Usuario.findOne({email: turnoTarget.paciente}).clone()
   let filterHistoria = { _id: paciente.historiaClinica }
 
   if ( req.body.estado === "Presente") {
+    await Usuario.findOneAndUpdate({email: turnoTarget.paciente}, {$pull: { turnos: { _id: req.url.split('/')[2] }}})
     if (turnoTarget.vax === "COVID19") {
       await HistoriaClinica.findOneAndUpdate(filterHistoria, { $inc: {'cantidadDosisCovid': 1}, $set: {'ultimaDosisCovid': new Date()}})
     }

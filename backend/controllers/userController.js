@@ -314,6 +314,12 @@ const vacunarPaciente = async (req, res = response) => {
   let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
   
   if (vax === "COVID19") {
+    if (paciente.age < 18) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'El paciente no puede ser vacunado porque es menor de 18 años.'
+      })
+    }
     if (historia.cantidadDosisCovid >= 2) {
       return res.status(400).json({
         ok: false,
