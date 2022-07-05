@@ -55,9 +55,9 @@ const modificarEstado = async (req, res = response) => {
 
   let paciente = await Usuario.findOne({email: turnoTarget.paciente}).clone()
   let filterHistoria = { _id: paciente.historiaClinica }
+  await Usuario.findOneAndUpdate({email: turnoTarget.paciente}, {$pull: { turnos: { vax: turnoTarget.vax }}})
 
   if ( req.body.estado === "Presente") {
-    await Usuario.findOneAndUpdate({email: turnoTarget.paciente}, {$pull: { turnos: { _id: req.url.split('/')[2] }}})
     if (turnoTarget.vax === "COVID19") {
       await HistoriaClinica.findOneAndUpdate(filterHistoria, { $inc: {'cantidadDosisCovid': 1}, $set: {'ultimaDosisCovid': new Date()}})
     }
@@ -185,7 +185,7 @@ const nuevoGripe = async (req, res = response) => {
     }
 
      await nuevoTurno.save()
-     dni2.turnos.push(nuevoTurno) 
+     //dni2.turnos.push(nuevoTurno) 
 
   try {
 
@@ -281,7 +281,7 @@ const nuevoFiebre = async (req, res = response) => {
         })
 
         await nuevoTurno.save()
-        dni2.turnos.push(nuevoTurno)
+        //dni2.turnos.push(nuevoTurno)
 
         try {
           await dni2.save()

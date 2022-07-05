@@ -115,7 +115,7 @@ const crearHistoria = async (req, res = response) => {
         estado: "Pendiente"
       })
 
-      dni2.turnos.push(nuevoTurno)
+      //dni2.turnos.push(nuevoTurno)
       await nuevoTurno.save()
 
     }
@@ -135,7 +135,7 @@ const crearHistoria = async (req, res = response) => {
         estado: 'Esperando confirmación'
       })
 
-      dni2.turnos.push(nuevoTurno)
+      //dni2.turnos.push(nuevoTurno)
       await nuevoTurno.save()
 
     }
@@ -172,7 +172,7 @@ const crearHistoria = async (req, res = response) => {
           }
         }
 
-      dni2.turnos.push(nuevoTurno)
+      //dni2.turnos.push(nuevoTurno)
       await nuevoTurno.save()
     }
 
